@@ -8,7 +8,10 @@
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript"
 	],
 	"globals": {
 		"Atomics": "readonly",
@@ -64,6 +67,13 @@
 			"always"
 		],
 
+		// Import / Export style
+		"import/first": "error",
+		"import/exports-last": "error",
+		"import/no-duplicates": "error",
+		"import/no-cycle": "error",
+		"import/order": "warn",
+
 		// Code Quality
 		"no-fallthrough": [
 			"error",
@@ -72,7 +82,7 @@
 			}
 		],
 		"no-unused-vars": "off",
-		// NB: need to turn it off to enable TS rule
+		// NB: need to turn it off to enable TS rule,
 
 		// React
 		"react/prop-types": 0,
