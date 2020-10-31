@@ -1,0 +1,90 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"plugins": [
+		"react",
+		"react-hooks",
+		"@typescript-eslint"
+	],
+	"rules": {
+		// Code Style
+		"indent": [
+			"warn",
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"max-len": [
+			"warn",
+			{
+				"code": 80,
+				"ignoreComments": true
+			}
+		],
+		"linebreak-style": [
+			"error",
+			"unix"
+		],
+		"quotes": [
+			"warn",
+			"single"
+		],
+		"semi": [
+			"warn",
+			"always"
+		],
+		"comma-dangle": [
+			"error",
+			"always-multiline"
+		],
+		"eol-last": [
+			"error",
+			"always"
+		],
+
+		// Code Quality
+		"no-fallthrough": [
+			"error",
+			{
+				"commentPattern": "break[\\s\\w]*omitted"
+			}
+		],
+		"no-unused-vars": "off",
+		// NB: need to turn it off to enable TS rule
+
+		// React
+		"react/prop-types": 0,
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "error",
+
+		// Typescript
+		"@typescript-eslint/no-var-requires": 0,
+		"@typescript-eslint/no-unused-vars": [
+			"error"
+		],
+		"@typescript-eslint/no-explicit-any": 0,
+		"@typescript-eslint/explicit-module-boundary-types": 0
+	}
+}
