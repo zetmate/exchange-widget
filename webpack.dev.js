@@ -6,7 +6,7 @@ module.exports = merge(common, {
 	mode: 'development',
 
 	devServer: {
-		port: 2001,
+		port: 2002,
 		overlay: false,
 		clientLogLevel: 'debug',
 		historyApiFallback: true,
