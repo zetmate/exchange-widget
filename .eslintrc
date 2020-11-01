@@ -8,7 +8,10 @@
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript"
 	],
 	"globals": {
 		"Atomics": "readonly",
@@ -64,6 +67,14 @@
 			"always"
 		],
 
+		// Import / Export style
+		"import/first": "error",
+		"import/exports-last": "error",
+		"import/no-duplicates": "error",
+		"import/no-cycle": "error",
+		"import/order": "warn",
+		"import/newline-after-import": "warn",
+
 		// Code Quality
 		"no-fallthrough": [
 			"error",
@@ -71,8 +82,8 @@
 				"commentPattern": "break[\\s\\w]*omitted"
 			}
 		],
-		"no-unused-vars": "off",
 		// NB: need to turn it off to enable TS rule
+		"no-unused-vars": 0,
 
 		// React
 		"react/prop-types": 0,
@@ -81,9 +92,7 @@
 
 		// Typescript
 		"@typescript-eslint/no-var-requires": 0,
-		"@typescript-eslint/no-unused-vars": [
-			"error"
-		],
+		"@typescript-eslint/no-unused-vars": "error",
 		"@typescript-eslint/no-explicit-any": 0,
 		"@typescript-eslint/explicit-module-boundary-types": 0
 	}
