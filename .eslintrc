@@ -73,6 +73,7 @@
 		"import/no-duplicates": "error",
 		"import/no-cycle": "error",
 		"import/order": "warn",
+		"import/newline-after-import": "warn",
 
 		// Code Quality
 		"no-fallthrough": [
@@ -81,8 +82,8 @@
 				"commentPattern": "break[\\s\\w]*omitted"
 			}
 		],
-		"no-unused-vars": "off",
-		// NB: need to turn it off to enable TS rule,
+		// NB: need to turn it off to enable TS rule
+		"no-unused-vars": 0,
 
 		// React
 		"react/prop-types": 0,
@@ -91,9 +92,7 @@
 
 		// Typescript
 		"@typescript-eslint/no-var-requires": 0,
-		"@typescript-eslint/no-unused-vars": [
-			"error"
-		],
+		"@typescript-eslint/no-unused-vars": "error",
 		"@typescript-eslint/no-explicit-any": 0,
 		"@typescript-eslint/explicit-module-boundary-types": 0
 	}
