@@ -19,7 +19,7 @@ export const Dot = styled.div`
 
 export const ButtonsContainer = styled(Flex)`
 
-	> span {
+	> * {
 		margin-right: ${ dotSize };
 	}
 
