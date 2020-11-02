@@ -18,7 +18,7 @@ type Props = {
 	/**
 	 * List of elements in carousel
 	 */
-	items: JSX.Element[];
+	items: JSX.Element[] | string[];
 
 	/**
 	 * ItemsContainer
@@ -29,6 +29,13 @@ type Props = {
 const defaultProps: Partial<Props> = {
 	ItemsContainer: ContentContainer,
 };
+
+/*
+ * Test ids
+ */
+const DOT_CONTAINER_TEST_ID = 'carousel__dot-container';
+const LEFT_ARROW_TEST_ID = 'carousel__arrow-left';
+const RIGHT_ARROW_TEST_ID = 'carousel__arrow-right';
 
 /**
  * Carousel component
@@ -74,7 +81,10 @@ const Carousel: React.FC<Props> = observer((props) => {
 	return (
 		<>
 			<SelfContainer>
-				<ArrowContainer onClick={ store.prev.bind(store) }>
+				<ArrowContainer
+					onClick={ store.prev.bind(store) }
+					data-testid={ LEFT_ARROW_TEST_ID }
+				>
 					<CaretIcon
 						{ ...caretProps }
 						direction="left"
@@ -85,7 +95,10 @@ const Carousel: React.FC<Props> = observer((props) => {
 					{ items[store.currentIndex] }
 				</ItemsContainer>
 
-				<ArrowContainer onClick={ store.next.bind(store) }>
+				<ArrowContainer
+					onClick={ store.next.bind(store) }
+					data-testid={ RIGHT_ARROW_TEST_ID }
+				>
 					<CaretIcon
 						{ ...caretProps }
 						direction="right"
@@ -94,7 +107,7 @@ const Carousel: React.FC<Props> = observer((props) => {
 
 			</SelfContainer>
 
-			<DotsContainer>
+			<DotsContainer data-testid={ DOT_CONTAINER_TEST_ID }>
 				{ dots }
 			</DotsContainer>
 		</>
@@ -104,5 +117,11 @@ const Carousel: React.FC<Props> = observer((props) => {
 Carousel.displayName = 'Carousel';
 Carousel.defaultProps = defaultProps;
 
-export { Props as CarouselProps };
+export {
+	Props as CarouselProps,
+	DOT_CONTAINER_TEST_ID,
+	LEFT_ARROW_TEST_ID,
+	RIGHT_ARROW_TEST_ID,
+};
+
 export default Carousel;

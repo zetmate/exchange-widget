@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 
 import App, { routes } from './App';
 
@@ -9,6 +7,7 @@ import App, { routes } from './App';
 import './styles/css/index.css';
 import GlobalStyles from './styles/GlobalStyles';
 import { mainTheme } from './styles/theme';
+import GlobalDependencies from './common/GlobalDependencies';
 
 /**
  * Root component with contexts and other utils wrappers
@@ -16,12 +15,13 @@ import { mainTheme } from './styles/theme';
 const Root: React.FC = React.memo(() => {
 
 	return (
-		<HashRouter basename={ routes.index }>
-			<ThemeProvider theme={ mainTheme }>
-				<GlobalStyles />
-				<App />
-			</ThemeProvider>
-		</HashRouter>
+		<GlobalDependencies
+			theme={ mainTheme }
+			indexRoute={ routes.index }
+		>
+			<GlobalStyles />
+			<App />
+		</GlobalDependencies>
 	);
 });
 

@@ -9,6 +9,14 @@ type Props = {
 	store: ICarouselStore;
 }
 
+/*
+ * Constants
+ */
+const DOT_BUTTON_TEST_ID = 'carousel__dot';
+
+/**
+ * Dot Button for carousel component
+ */
 const DotButton: React.FC<Props> = observer(({ index, store }) => {
 
 	const isActive = store.currentIndex === index;
@@ -19,6 +27,7 @@ const DotButton: React.FC<Props> = observer(({ index, store }) => {
 
 	return (
 		<Dot
+			data-testid={ DOT_BUTTON_TEST_ID }
 			isActive={ isActive }
 			onClick={ onClick }
 		/>
@@ -27,5 +36,9 @@ const DotButton: React.FC<Props> = observer(({ index, store }) => {
 
 DotButton.displayName = 'DotButton';
 
-export { Props as DotButtonProps };
+export {
+	Props as DotButtonProps,
+	DOT_BUTTON_TEST_ID,
+};
+
 export default DotButton;

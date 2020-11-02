@@ -1,6 +1,6 @@
 import { fmod, get, isObject } from './index';
 
-describe('Common helper functions', () => {
+describe('Common utility functions', () => {
 
 	describe('Checks if value is an object', () => {
 
