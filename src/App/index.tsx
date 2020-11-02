@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import routes from './screens/routes';
 import { WalletScreen } from './screens';
@@ -19,29 +19,29 @@ const IndexRedirect = () => (
 const App: React.FC = React.memo(() => {
 
 	return (
-		<Router basename={ routes.index }>
-			<AppContainer>
-				<Switch>
-					<Route
-						exact
-						path={ routes.index }
-						component={ IndexRedirect }
-					/>
-					<Route
-						exact
-						path={ routes.wallet }
-						component={ () => <WalletScreen /> }
-					/>
-					<Route
-						exact
-						path={ routes.exchange }
-						component={ () => <div>Exchange</div> }
-					/>
-				</Switch>
-			</AppContainer>
-		</Router>
+		<AppContainer>
+			<Switch>
+				<Route
+					exact
+					path={ routes.index }
+					component={ IndexRedirect }
+				/>
+				<Route
+					exact
+					path={ routes.wallet }
+					component={ () => <WalletScreen /> }
+				/>
+				<Route
+					exact
+					path={ routes.exchange }
+					component={ () => <div>Exchange</div> }
+				/>
+			</Switch>
+		</AppContainer>
 	);
 });
 
 App.displayName = 'App';
+
+export { default as routes } from './screens/routes';
 export default App;

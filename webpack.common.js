@@ -12,9 +12,6 @@ module.exports = {
 		react: ['react', 'react-dom', 'react-router', 'react-router-dom'],
 		mobx: ['mobx', 'mobx-react'],
 
-		// css
-		global: './src/styles/reset.css',
-
 		// app js
 		app: './src/index.tsx',
 	},
