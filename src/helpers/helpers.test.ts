@@ -45,25 +45,25 @@ describe('Common helper functions', () => {
 
 		it('Should work for values of non-primitive types', () => {
 
-			const prop = get<string>(obj, 'prop');
+			const prop = get(obj, 'prop');
 			expect(prop).toMatchObject({ nested: 'value' });
 		});
 
 		it('Should work with paths that contain square braces', () => {
 
-			const value = get<string>(obj, 'prop.nested[nested]');
+			const value = get(obj, 'prop.nested[nested]');
 			expect(value).toBe('value');
 		});
 
 		it('Should return the default value if result is undefined', () => {
 
-			const value = get<string>(obj, 'prop.la', 'default');
+			const value = get(obj, 'prop.la', 'default');
 			expect(value).toBe('default');
 		});
 
 		it('Should return undefined if there is no default value', () => {
 
-			const value = get<string>(obj, 'prop.la.a.b.c');
+			const value = get(obj, 'prop.la.a.b.c');
 			expect(value).toBeUndefined();
 		});
 	});
