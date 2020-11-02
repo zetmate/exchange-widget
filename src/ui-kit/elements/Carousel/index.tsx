@@ -12,7 +12,7 @@ type Props = {
 	 * Render function
 	 * @param currentIndex - index of the currently showed item
 	 */
-	render(currentIndex: number): JSX.Element
+	render(currentIndex: number): JSX.Element;
 }
 
 /**

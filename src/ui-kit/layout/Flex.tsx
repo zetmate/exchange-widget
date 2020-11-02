@@ -21,9 +21,9 @@ import {
 type FlexProps = SpaceProps & LayoutProps & ColorProps & FlexboxProps
 	& TypographyProps
 	& {
-	onClick?: MouseEventHandler,
-	onMouseOver?: MouseEventHandler,
-	onMouseOut?: MouseEventHandler
+	onClick?: MouseEventHandler;
+	onMouseOver?: MouseEventHandler;
+	onMouseOut?: MouseEventHandler;
 };
 type FlexFC = React.FC<FlexProps>;
 
