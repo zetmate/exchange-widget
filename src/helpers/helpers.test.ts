@@ -84,9 +84,9 @@ describe('Common helper functions', () => {
 
 		it('Should work with negative indexes as well', () => {
 
-			expect(fmod(-1, 10)).toBe(10);
+			expect(fmod(-1, 10)).toBe(9);
 			expect(fmod(-30, 10)).toBe(0);
-			expect(fmod(-53, 10)).toBe(8);
+			expect(fmod(-53, 10)).toBe(7);
 		});
 	});
 });
