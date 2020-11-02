@@ -3,19 +3,15 @@ import React, { useMemo } from 'react';
 type Props = {
 	direction: 'left' | 'right' | 'down' | 'up';
 	size: string;
+	color: string;
 
 	strokeWidth?: number;
 	isSolid?: boolean;
-	color?: string;
-	lala: (la: string) => void;
 }
 
 const defaultProps: Partial<Props> = {
-	strokeWidth: 1.5,
+	strokeWidth: 0,
 	isSolid: true,
-
-	// FIXME: hardcoded color
-	color: '#fff',
 };
 
 /**

@@ -1,3 +1,5 @@
+import { useTheme as useThemeOriginal } from 'styled-components';
+
 type Theme = {
 	colors: {
 		text: string;
@@ -60,7 +62,10 @@ const mainTheme: Theme = {
 	},
 };
 
+const useTheme = (): Theme => useThemeOriginal() as Theme;
+
 export {
 	mainTheme,
 	Theme,
+	useTheme,
 };

@@ -2,16 +2,15 @@ import React from 'react';
 
 import { Carousel } from '../../../ui-kit/elements';
 
+const items = ['one', 'two', 'three'];
+
 /**
  * Wallet Screen component
  */
 const WalletScreen: React.FC = React.memo(() => {
 	return (
-		<div>
-			<Carousel
-				numItems={ 3 }
-				render={ index => <>{ index }</> }
-			/>
+		<div style={ { height: '50%' } }>
+			<Carousel items={ items } />
 		</div>
 	);
 });

@@ -1,4 +1,4 @@
-import { get, isObject } from './index';
+import { fmod, get, isObject } from './index';
 
 describe('Common helper functions', () => {
 
@@ -68,4 +68,25 @@ describe('Common helper functions', () => {
 		});
 	});
 
+	describe('Returns index in range', () => {
+
+		it('Should not change index if it is smaller than size', () => {
+
+			expect(fmod(9, 10)).toBe(9);
+		});
+
+		it('Should keep index in range if it is out of bounds', () => {
+
+			expect(fmod(11, 10)).toBe(1);
+			expect(fmod(30, 10)).toBe(0);
+			expect(fmod(53, 10)).toBe(3);
+		});
+
+		it('Should work with negative indexes as well', () => {
+
+			expect(fmod(-1, 10)).toBe(9);
+			expect(fmod(-30, 10)).toBe(0);
+			expect(fmod(-53, 10)).toBe(7);
+		});
+	});
 });

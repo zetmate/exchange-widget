@@ -51,3 +51,12 @@ export function get<T = any>(object: any, path: string, defaultValue?: T): T {
 			: result
 	);
 }
+
+export const fmod = (index: number, size: number) => {
+	if (index < 0) {
+		const remainder = Math.abs(index) % size;
+		return remainder === 0 ? 0 : size - remainder;
+	}
+
+	return index % size;
+};
