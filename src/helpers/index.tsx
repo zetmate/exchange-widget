@@ -14,6 +14,12 @@ export const isObject = (value: any) => (
 	value !== null && typeof value === 'object'
 );
 
+/**
+ * Returns a value at given path
+ * @param object - object to get value from
+ * @param path - a path to value
+ * @param defaultValue - that will be returned if value is undefined
+ */
 export function get<T = any>(object: any, path: string, defaultValue?: T): T {
 
 	const regex = new RegExp('[.\\[\\]]');
