@@ -7,6 +7,18 @@ import { StyledProps } from '../types';
  */
 const GlobalStyles = createGlobalStyle<StyledProps>`
 
+	html,
+	body,
+	#app {
+		width: 100%;
+		height: 100%;
+	}
+
+	#app {
+		display: flex;
+		justify-content: center;
+	}
+
 	body {
 		font-family: ${ p => p.theme.fontFamily }, sans-serif;
 		font-weight: ${ p => p.theme.fontWeights.regular };

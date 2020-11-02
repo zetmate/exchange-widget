@@ -1,12 +1,13 @@
 import React from 'react';
-import { ThemedStyledProps } from 'styled-components';
 
 import { Theme } from '../styles/theme';
 
 /**
  * Styled component props
  */
-export type StyledProps = ThemedStyledProps<unknown, Theme>;
+export type StyledProps = {
+	theme: Theme;
+};
 
 /**
  * Styled component with theme props
