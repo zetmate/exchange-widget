@@ -6,8 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import App, { routes } from './App';
 
 // Styles
-import './styles/reset.css';
-import './styles/fonts.css';
+import './styles/css/index.css';
 import GlobalStyles from './styles/GlobalStyles';
 import { mainTheme } from './styles/theme';
 
