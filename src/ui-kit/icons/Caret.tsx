@@ -37,7 +37,7 @@ const getRotateValue = (direction: Props['direction']): number => {
 /**
  * Caret svg icon
  */
-const CaretIcon: React.FC<Props> = React.memo((props) => {
+const CaretIcon: React.FC<Props> = React.memo(props => {
 
 	const { direction, size, strokeWidth, isSolid, color } = props;
 

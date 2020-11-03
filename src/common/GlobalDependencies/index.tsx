@@ -15,7 +15,7 @@ const defaultProps: Partial<Props> = {
 	theme: mainTheme,
 };
 
-const GlobalDependencies: React.FC<Props> = React.memo((props) => {
+const GlobalDependencies: React.FC<Props> = React.memo(props => {
 
 	const { children, theme, indexRoute } = props;
 

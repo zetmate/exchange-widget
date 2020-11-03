@@ -40,7 +40,7 @@ const RIGHT_ARROW_TEST_ID = 'carousel__arrow-right';
 /**
  * Carousel component
  */
-const Carousel: React.FC<Props> = observer((props) => {
+const Carousel: React.FC<Props> = observer(props => {
 
 	const { items, ItemsContainer } = props;
 	const theme = useTheme();

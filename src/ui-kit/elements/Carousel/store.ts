@@ -56,7 +56,10 @@ class CarouselStore implements ICarouselStore {
 		return this._size;
 	}
 
-	@action setSize(newSize: ICarouselStore['size']) {
+	@action setSize(
+		newSize: ICarouselStore['size'],
+	): ReturnType<ICarouselStore['setSize']> {
+
 		// Do nothing if size is already correct
 		if (this._size === newSize) {
 			return;
