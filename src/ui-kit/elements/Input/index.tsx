@@ -1,4 +1,10 @@
-import React, { KeyboardEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+	KeyboardEventHandler,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
 
 import { getFloatRegex, intRegex, noop } from '../../../helpers';
 import { EventInput } from '../../../types';
