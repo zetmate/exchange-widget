@@ -1,18 +1,32 @@
-export const isUndefined = (value: any) => (
+/*
+ * Type checks and null checks
+ */
+
+export const isUndefined = (value: any): boolean => (
 	value === undefined
 );
 
-export const isDefined = (value: any) => (
+export const isDefined = (value: any): boolean => (
 	value !== undefined
 );
 
-export const isNil = (value: any) => (
+export const isNil = (value: any): boolean => (
 	value === null || value === undefined
 );
 
-export const isObject = (value: any) => (
+export const isObject = (value: any): boolean => (
 	value !== null && typeof value === 'object'
 );
+
+export const isFunction = (value: any): boolean => (
+	typeof value === 'function'
+);
+
+/**
+ * Empty function shortcut
+ */
+/* eslint-disable-next-line @typescript-eslint/no-empty-function */
+export const noop = (): void => {};
 
 /**
  * Returns a value at given path
@@ -52,7 +66,7 @@ export function get<T = any>(object: any, path: string, defaultValue?: T): T {
 	);
 }
 
-export const fmod = (index: number, size: number) => {
+export const fmod = (index: number, size: number): number => {
 	if (index < 0) {
 		const remainder = Math.abs(index) % size;
 		return remainder === 0 ? 0 : size - remainder;
