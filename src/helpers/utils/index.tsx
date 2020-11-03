@@ -74,3 +74,18 @@ export const fmod = (index: number, size: number): number => {
 
 	return index % size;
 };
+
+/*
+ * Regexp to check if string is an integer
+ */
+export const intRegex = new RegExp(/^\d+$/);
+
+/**
+ * Returns a regex to detect a float with specified number of digits after ,|.
+ * @param maxNumDigits (optional) - if not specified, regex for any number of digits will be returned
+ */
+export const getFloatRegex = (maxNumDigits?: number): RegExp => (
+	maxNumDigits
+		? new RegExp(`^\\d+(\\.)?\\d{0,${ maxNumDigits }}$`)
+		: new RegExp(/^\d+(\.)?\d*$/)
+);
