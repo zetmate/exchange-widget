@@ -31,6 +31,11 @@ type Props = {
 	id?: string;
 
 	/**
+	 * Placeholder
+	 */
+	placeholder?: string;
+
+	/**
 	 * If true, no user changes will be allowed,
 	 * setting value from controls will still work
 	 */
@@ -61,7 +66,10 @@ const defaultProps: Partial<Props> = {
  */
 const Input: React.FC<Props> = React.memo(props => {
 
-	const { type, initialValue, onControlsReady, id, isDisabled } = props;
+	const {
+		type, initialValue, onControlsReady, id, isDisabled, placeholder,
+	} = props;
+
 	const [inputValue, setValue] = useState<string | number>(initialValue);
 
 	// Create controls object and pass it to onControlsReady
@@ -102,6 +110,7 @@ const Input: React.FC<Props> = React.memo(props => {
 			value={ inputValue }
 			onChange={ onChange }
 			disabled={ isDisabled }
+			placeholder={ placeholder }
 		/>
 	);
 });
