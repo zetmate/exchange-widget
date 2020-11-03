@@ -66,6 +66,11 @@ export function get<T = any>(object: any, path: string, defaultValue?: T): T {
 	);
 }
 
+/**
+ * Fmod math function. Normalizes index to range
+ * @param index - not normalized index
+ * @param size - iterable size
+ */
 export const fmod = (index: number, size: number): number => {
 	if (index < 0) {
 		const remainder = Math.abs(index) % size;
@@ -75,17 +80,31 @@ export const fmod = (index: number, size: number): number => {
 	return index % size;
 };
 
+/**
+ * Round to num decimals
+ * @param value
+ * @param numDecimals
+ */
+export const roundTo = (value: number, numDecimals: number): number => {
+	if (numDecimals === 0) {
+		return Math.round(value);
+	}
+
+	const factor = 10 ** numDecimals;
+	return Math.round(value * factor) / factor;
+};
+
 /*
  * Regexp to check if string is an integer
  */
 export const intRegex = new RegExp(/^\d+$/);
 
 /**
- * Returns a regex to detect a float with specified number of digits after ,|.
- * @param maxNumDigits (optional) - if not specified, regex for any number of digits will be returned
+ * Returns a regex to detect a float with specified number of decimals
+ * @param maxNumDec (optional) - if not specified, regex for any number of decimals will be returned
  */
-export const getFloatRegex = (maxNumDigits?: number): RegExp => (
-	maxNumDigits
-		? new RegExp(`^\\d+(\\.)?\\d{0,${ maxNumDigits }}$`)
+export const getFloatRegex = (maxNumDec?: number): RegExp => (
+	maxNumDec
+		? new RegExp(`^\\d+(\\.)?\\d{0,${ maxNumDec }}$`)
 		: new RegExp(/^\d+(\.)?\d*$/)
 );

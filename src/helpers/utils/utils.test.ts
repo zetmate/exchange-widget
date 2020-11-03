@@ -1,4 +1,4 @@
-import { fmod, get, getFloatRegex, intRegex, isObject } from './index';
+import { fmod, get, getFloatRegex, intRegex, isObject, roundTo } from './index';
 
 describe('Common utility functions', () => {
 
@@ -87,6 +87,17 @@ describe('Common utility functions', () => {
 			expect(fmod(-1, 10)).toBe(9);
 			expect(fmod(-30, 10)).toBe(0);
 			expect(fmod(-53, 10)).toBe(7);
+		});
+	});
+
+	describe('Rounds number to a specified number of decimals', () => {
+
+		it('Should work', () => {
+			expect(roundTo(1.567, 2)).toBe(1.57);
+		});
+
+		it('Should work when decimals = 0', () => {
+			expect(roundTo(1.567, 0)).toBe(2);
 		});
 	});
 

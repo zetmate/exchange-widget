@@ -92,6 +92,8 @@
 		],
 		// NB: need to turn it off to enable TS rule
 		"no-unused-vars": 0,
+		// Turn off, otherwise it's false positive for regexp
+		"no-useless-escape": 0,
 
 		// React
 		"react/prop-types": 0,

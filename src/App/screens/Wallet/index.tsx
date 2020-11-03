@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Carousel } from '../../../ui-kit/elements';
+import { Carousel, Input } from '../../../ui-kit/elements';
 
 const items = ['one', 'two', 'three'];
 
@@ -9,9 +9,12 @@ const items = ['one', 'two', 'three'];
  */
 const WalletScreen: React.FC = React.memo(() => {
 	return (
-		<div style={ { height: '50%' } }>
-			<Carousel items={ items } />
-		</div>
+		<>
+			<div style={ { height: '50%' } }>
+				<Carousel items={ items } />
+			</div>
+			<Input type="float2" />
+		</>
 	);
 });
 

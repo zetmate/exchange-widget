@@ -1,5 +1,8 @@
-import React from 'react';
-import { noop } from '../../../helpers';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { getFloatRegex, intRegex, noop } from '../../../helpers';
+import { EventInput } from '../../../types';
+import { Field } from './Input.styled';
 
 /**
  * This interface allows to control component from the outside
@@ -13,28 +16,44 @@ type Controls = {
 
 type Props = {
 	/**
-	 * Parse input value
-	 */
-	parseValue: (value: string) => string | 'int' | 'float';
-
-	/**
 	 * Initial input value
 	 */
-	initialValue: string | number;
+	initialValue?: string | number;
 
 	/**
-	 * A callback that gets Controls object as an argument
+	 * Type of the input value
 	 */
-	useControls?: (controls: Controls) => void;
+	type?: 'string' | 'int' | 'float2';
 
 	/**
 	 * Input id - is needed for the form component
 	 */
 	id?: string;
+
+	/**
+	 * If true, no user changes will be allowed,
+	 * setting value from controls will still work
+	 */
+	isDisabled?: boolean;
+
+	/**
+	 * Handle onChange event
+	 * @param value - current
+	 */
+	onChange?: (value: string) => void;
+
+	/**
+	 * A callback that gets Controls object as an argument
+	 */
+	onControlsReady?: (controls: Controls) => void;
 }
 
 const defaultProps: Partial<Props> = {
-	useControls: noop,
+	type: 'string',
+	initialValue: '',
+	isDisabled: false,
+	onChange: noop,
+	onControlsReady: noop,
 };
 
 /**
@@ -42,10 +61,48 @@ const defaultProps: Partial<Props> = {
  */
 const Input: React.FC<Props> = React.memo(props => {
 
-	const { parseValue, initialValue, useControls, id } = props;
+	const { type, initialValue, onControlsReady, id, isDisabled } = props;
+	const [inputValue, setValue] = useState<string | number>(initialValue);
+
+	// Create controls object and pass it to onControlsReady
+	useEffect(() => {
+		// Init controls object
+		const controls: Controls = {
+			setValue: (newValue: string | number) => setValue(newValue),
+		};
+		// Send controls object
+		onControlsReady(controls);
+
+	}, [onControlsReady, setValue]);
+
+	const valueRegex = useMemo(() => {
+		switch (type) {
+			case 'string':
+				return new RegExp(/./);
+			case 'int':
+				return intRegex;
+			case 'float2':
+				return getFloatRegex(2);
+		}
+	}, [type]);
+
+	// Change event handler
+	const onChange = useCallback((e: EventInput) => {
+		const { target: { value } } = e;
+
+		// Update value only if it matches the pattern or is empty string
+		if (valueRegex.test(value) || value === '') {
+			setValue(value);
+		}
+	}, [valueRegex]);
 
 	return (
-		<input id={ id } />
+		<Field
+			id={ id }
+			value={ inputValue }
+			onChange={ onChange }
+			disabled={ isDisabled }
+		/>
 	);
 });
 
