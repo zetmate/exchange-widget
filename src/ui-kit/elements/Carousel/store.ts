@@ -79,7 +79,6 @@ class CarouselStore implements ICarouselStore {
 
 	@action prev(): ReturnType<ICarouselStore['prev']> {
 		this.switchTo(this._currentIndex - 1);
-		console.log('current', this.currentIndex);
 	}
 
 	@action switchTo(
