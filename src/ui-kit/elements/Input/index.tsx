@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { KeyboardEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getFloatRegex, intRegex, noop } from '../../../helpers';
 import { EventInput } from '../../../types';
-import { Field } from './Input.styled';
+import { Field, StyledInput } from './Input.styled';
 
 /**
  * This interface allows to control component from the outside
@@ -62,6 +62,19 @@ const defaultProps: Partial<Props> = {
 };
 
 /**
+ * Handle key press
+ * @param e - keyboard event
+ */
+const onKeyPress: KeyboardEventHandler = e => {
+
+	if (e.key === 'Enter' || e.key === 'Escape') {
+		// Fire blur event
+		const input = e.target as HTMLInputElement;
+		input.blur();
+	}
+};
+
+/**
  * Input component
  */
 const Input: React.FC<Props> = React.memo(props => {
@@ -71,6 +84,7 @@ const Input: React.FC<Props> = React.memo(props => {
 	} = props;
 
 	const [inputValue, setValue] = useState<string | number>(initialValue);
+	const [isFocused, setFocused] = useState<boolean>(false);
 
 	// Create controls object and pass it to onControlsReady
 	useEffect(() => {
@@ -104,14 +118,29 @@ const Input: React.FC<Props> = React.memo(props => {
 		}
 	}, [valueRegex]);
 
+	// Focus event handler
+	const onFocus = useCallback(() => {
+		setFocused(true);
+	}, [setFocused]);
+
+	// Blur event handler
+	const onBlur = useCallback(() => {
+		setFocused(false);
+	}, [setFocused]);
+
 	return (
-		<Field
-			id={ id }
-			value={ inputValue }
-			onChange={ onChange }
-			disabled={ isDisabled }
-			placeholder={ placeholder }
-		/>
+		<Field isFocused={ isFocused }>
+			<StyledInput
+				id={ id }
+				value={ inputValue }
+				onChange={ onChange }
+				disabled={ isDisabled }
+				placeholder={ placeholder }
+				onFocus={ onFocus }
+				onBlur={ onBlur }
+				onKeyUp={ onKeyPress }
+			/>
+		</Field>
 	);
 });
 
