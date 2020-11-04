@@ -5,6 +5,7 @@ import { Theme, useTheme } from '../../../../styles/theme';
 import { Option, DropdownStore, OnChange } from '../types';
 import DropdownOption from '../Option';
 import { generateHash, isFunction, isNil } from '../../../../helpers/utils';
+import { Container } from './OptionsList.styled';
 
 type Props<T> = React.PropsWithChildren<{
 	/**
@@ -21,11 +22,6 @@ type Props<T> = React.PropsWithChildren<{
 	 * Change event handler
 	 */
 	onChange: OnChange<T>;
-
-	/**
-	 * Field wrapper html element
-	 */
-	field: HTMLDivElement;
 }>
 
 /**
@@ -67,6 +63,10 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 		: { top: top + height, left }
 	;
 
+	console.log('window height', window.innerHeight);
+	console.log('top', top);
+	console.log('position', position);
+
 	return {
 		...position,
 		width,
@@ -95,23 +95,22 @@ const traceMemoryLeaks = (): void => {
  */
 function OptionsList<T>(props: Props<T>): React.ReactElement {
 
-	const { store, onChange, field, options = [] } = props;
+	const { store, onChange, options = [] } = props;
 	const theme = useTheme();
 
 	const [style, setStyle] = useState({});
 
 	// Style for the wrapping element (positioning + etc)
 	const updateWrapperStyle = useCallback(() => {
-
 		// Do nothing if not open or field elm does not exist yet
-		if (isNil(field) || !store.isOpen) {
+		if (isNil(store.field)) {
 			return;
 		}
 
 		// Compute position and other styles
-		setStyle(getWrapperStyle(field, theme));
+		setStyle(getWrapperStyle(store.field, theme));
 
-	}, [field, store.isOpen, theme]);
+	}, [store?.field, theme]);
 
 	// Update position on resize and parameters change
 	useEffect(() => {
@@ -152,9 +151,9 @@ function OptionsList<T>(props: Props<T>): React.ReactElement {
 	}
 
 	return (
-		<div style={ style }>
+		<Container style={ style }>
 			{ optionsElms }
-		</div>
+		</Container>
 	);
 }
 

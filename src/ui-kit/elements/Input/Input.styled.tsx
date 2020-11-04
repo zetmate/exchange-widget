@@ -6,11 +6,9 @@ type FieldProps = StyledProps & {
 	isFocused: boolean;
 }
 
-const bgWhenActive = 'rgba(255, 255, 255, 0.05)';
-
 const getBorderColor = (p: FieldProps): string => {
 	if (p.isFocused) {
-		return p.theme.colors.lightMain;
+		return 'rgba(255, 255, 255, 0.8)';
 	}
 
 	return p.theme.colors.transparentWhite;
@@ -18,7 +16,7 @@ const getBorderColor = (p: FieldProps): string => {
 
 const getBackground = (p: FieldProps): string => {
 	if (p.isFocused) {
-		return bgWhenActive;
+		return p.theme.colors.main;
 	}
 	return p.theme.colors.invisibleWhite;
 };
@@ -35,8 +33,7 @@ const Field = styled(FlexRowCenter)<FieldProps>`
 	transition: all 0.4s, background-color 0.4s;
 
 	&:hover {
-		border-color: ${ (p: FieldProps) => p.theme.colors.lightMain };
-		background: ${ bgWhenActive };
+		border-color: rgba(255, 255, 255, 0.8);
 	}
 `;
 
