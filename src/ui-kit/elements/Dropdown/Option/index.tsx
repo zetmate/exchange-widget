@@ -27,6 +27,7 @@ function DropdownOption<T>(props: Props<T>): React.ReactElement {
 
 	const onClick = useCallback(() => {
 		store.currentOption = { id, display, value };
+		store.isOpen = false;
 
 		onSelect(value);
 

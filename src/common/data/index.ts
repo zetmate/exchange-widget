@@ -1,17 +1,17 @@
-import { Currency } from '../../types';
+import { Currency, CurrencyCode } from '../../types';
 
-const currencies: { [key: string]: Currency } = {
-	usd: {
+const currencies: { [key in CurrencyCode]: Currency } = {
+	USD: {
 		code: 'USD',
 		symbol: '$',
 	},
 
-	eur: {
+	EUR: {
 		code: 'EUR',
 		symbol: '€',
 	},
 
-	gbp: {
+	GBP: {
 		code: 'GBP',
 		symbol: '£',
 	},

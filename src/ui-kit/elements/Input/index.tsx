@@ -2,7 +2,7 @@ import React, {
 	KeyboardEventHandler,
 	useCallback,
 	useEffect,
-	useMemo,
+	useMemo, useRef,
 	useState,
 } from 'react';
 
@@ -87,21 +87,29 @@ const Input: React.FC<Props> = React.memo(props => {
 
 	const {
 		type, initialValue, onControlsReady, id, isDisabled, placeholder,
+		onChange,
 	} = props;
 
 	const [inputValue, setValue] = useState<string | number>(initialValue);
 	const [isFocused, setFocused] = useState<boolean>(false);
+	const inputRef = useRef<HTMLInputElement>();
 
 	// Create controls object and pass it to onControlsReady
 	useEffect(() => {
 		// Init controls object
 		const controls: Controls = {
-			setValue: (newValue: string | number) => setValue(newValue),
+
+			setValue: (newValue: string | number) => {
+				// Set value if it has changed
+				if (newValue !== inputRef.current?.value) {
+					setValue(newValue);
+				}
+			},
 		};
 		// Send controls object
 		onControlsReady(controls);
 
-	}, [onControlsReady, setValue]);
+	}, [onControlsReady, setValue, inputRef]);
 
 	const valueRegex = useMemo(() => {
 		switch (type) {
@@ -115,14 +123,15 @@ const Input: React.FC<Props> = React.memo(props => {
 	}, [type]);
 
 	// Change event handler
-	const onChange = useCallback((e: EventInput) => {
+	const onChangeHandler = useCallback((e: EventInput) => {
 		const { target: { value } } = e;
 
 		// Update value only if it matches the pattern or is empty string
 		if (valueRegex.test(value) || value === '') {
 			setValue(value);
+			onChange(value);
 		}
-	}, [valueRegex]);
+	}, [valueRegex, onChange]);
 
 	// Focus event handler
 	const onFocus = useCallback(() => {
@@ -139,12 +148,13 @@ const Input: React.FC<Props> = React.memo(props => {
 			<StyledInput
 				id={ id }
 				value={ inputValue }
-				onChange={ onChange }
+				onChange={ onChangeHandler }
 				disabled={ isDisabled }
 				placeholder={ placeholder }
 				onFocus={ onFocus }
 				onBlur={ onBlur }
 				onKeyUp={ onKeyPress }
+				ref={ inputRef }
 			/>
 		</Field>
 	);

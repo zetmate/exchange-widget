@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 
 import routes from './screens/routes';
-import { WalletScreen } from './screens';
+import { ExchangeScreen, WalletScreen } from './screens';
 import { AppContainer } from './App.styled';
 
 /**
@@ -29,12 +29,12 @@ const App: React.FC = React.memo(() => {
 				<Route
 					exact
 					path={ routes.wallet }
-					component={ () => <WalletScreen /> }
+					component={ WalletScreen }
 				/>
 				<Route
 					exact
 					path={ routes.exchange }
-					component={ () => <div>Exchange</div> }
+					component={ ExchangeScreen }
 				/>
 			</Switch>
 		</AppContainer>

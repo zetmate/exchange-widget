@@ -19,7 +19,9 @@ export type EventInput = React.ChangeEvent<HTMLInputElement>;
 /*
  * Data
  */
+export type CurrencyCode = 'USD' | 'EUR' | 'GBP';
+
 export type Currency = {
 	symbol: string;
-	code: string;
+	code: CurrencyCode;
 }

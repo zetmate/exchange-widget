@@ -1,8 +1,9 @@
 import { action, computed, observable } from 'mobx';
 
 import { Currency } from '../../../types';
+import { currencies } from '../../../common/data';
 import { get } from '../../../helpers/utils';
-import { CalcType, ExchangeValue, ExchangeValues } from './types';
+import { CalcType, ExchangeValues } from './types';
 
 interface IExchange {
 	/**
@@ -36,11 +37,6 @@ interface IExchange {
 	setRate(newRate: number): void;
 }
 
-const emptyExchangeValue: ExchangeValue = {
-	currency: null,
-	quantity: 0,
-};
-
 class Exchange implements IExchange {
 	/*
 	 * Public props
@@ -65,24 +61,21 @@ class Exchange implements IExchange {
 		calcType: CalcType,
 	): void {
 		// Get quantity
-		const quantity = get(this.values, `${ calcType }.quantity`);
+		const quantity = get(this._values, `${ calcType }.quantity`);
+		this._rate = rate;
 
-		// Update value
-		this.values[calcType] = { quantity, currency };
+		// Update values
+		this._values[calcType] = { quantity, currency };
+		this.syncQuantities(calcType);
 	}
 
 	@action setQuantity(quantity: number, calcType: CalcType): void {
 		// Get currency
-		const currency = get(this.values, `${ calcType }.currency`);
+		const currency = get(this._values, `${ calcType }.currency`);
 
-		// Update value
-		this.values[calcType] = { quantity, currency };
-
-		// Determine other quantity
-		const otherType = calcType === 'to' ? 'from' : 'to';
-		const ratio = calcType === 'to' ? this._rate : 1 / this._rate;
-
-		this.values[otherType].quantity = ratio * quantity;
+		// Update values
+		this._values[calcType] = { quantity, currency };
+		this.syncQuantities(calcType);
 	}
 
 	@action setRate(newRate: number): void {
@@ -93,12 +86,30 @@ class Exchange implements IExchange {
 	/*
 	 * Private props
 	 */
-	@observable private _rate: IExchange['rate'];
+	@observable private _rate: IExchange['rate'] = 0.74;
 
 	@observable private _values: IExchange['values'] = {
-		to: emptyExchangeValue,
-		from: emptyExchangeValue,
+		from: {
+			currency: currencies.GBP,
+			quantity: 0,
+		},
+		to: {
+			currency: currencies.EUR,
+			quantity: 0,
+		},
 	};
+
+	/*
+	 * Private methods
+	 */
+	@action syncQuantities(typeThatChanged: CalcType): void {
+		const { quantity } = this._values[typeThatChanged];
+
+		const otherType = typeThatChanged === 'to' ? 'from' : 'to';
+		const ratio = typeThatChanged === 'to' ? this._rate : 1 / this._rate;
+
+		this._values[otherType].quantity = ratio * quantity;
+	}
 }
 
 const exchange = new Exchange();
