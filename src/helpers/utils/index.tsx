@@ -108,3 +108,17 @@ export const getFloatRegex = (maxNumDec?: number): RegExp => (
 		? new RegExp(`^\\d+(\\.)?\\d{0,${ maxNumDec }}$`)
 		: new RegExp(/^\d+(\.)?\d*$/)
 );
+
+/**
+ * Generate hash
+ * @param length - hash size, 16 by default
+ */
+export const generateHash = (length = 16): string => {
+	const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.match(/./g);
+	let text = '';
+
+	for (let i = 0; i < length; i++) {
+		text += charset[Math.floor(Math.random() * charset.length)];
+	}
+	return text;
+};

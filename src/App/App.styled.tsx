@@ -8,7 +8,7 @@ import { StyledProps } from '../types';
 export const AppContainer = styled.main<StyledProps>`
 	height: 100%;
 	width: 100%;
-	max-width: 800px;
+	max-width: 1340px;
 
 	background: ${ p => p.theme.colors.bg };
 `;

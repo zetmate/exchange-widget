@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { StyledProps } from '../../../types';
+import { FlexRowCenter } from '../../layout';
 
 type FieldProps = StyledProps & {
 	isFocused: boolean;
@@ -22,28 +23,29 @@ const getBackground = (p: FieldProps): string => {
 	return p.theme.colors.invisibleWhite;
 };
 
-const Field = styled.div<FieldProps>`
+const Field = styled(FlexRowCenter)<FieldProps>`
 	height: 5vh;
 	padding: 1vh;
 
 	border: solid 2px ${ getBorderColor };
-	border-radius: 0.7vh;
 
+	color: ${ (p: FieldProps) => p.theme.colors.white };
 	background: ${ getBackground };
 
-	transition: border-color 0.4s, background-color 0.4s;
-	
+	transition: all 0.4s, background-color 0.4s;
+
 	&:hover {
+		border-color: ${ (p: FieldProps) => p.theme.colors.lightMain };
 		background: ${ bgWhenActive };
 	}
 `;
 
 const StyledInput = styled.input`
-	width: 100%;
+	flex: 1 0 auto;
 	height: 100%;
 
 	border: none;
-	color: ${ (p: FieldProps) => p.theme.colors.white };;
+	color: inherit;
 	background: transparent;
 `;
 
