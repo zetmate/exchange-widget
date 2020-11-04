@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { observer, useLocalStore } from 'mobx-react';
 
 import CaretIcon from '../../icons/Caret';
@@ -47,11 +47,17 @@ function Dropdown<T>(props: Props<T>): React.ReactElement {
 
 	const store = useLocalStore<DropdownStore<T>>(() => ({
 		isOpen: false,
+		field: null,
 		currentOption: {
 			...(defaultOption || { display: placeholder, value: undefined }),
 			id: 0,
 		},
 	}));
+
+	useEffect(() => {
+		store.field = fieldRef.current;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [fieldRef.current]);
 
 	const caret = useMemo(() => (
 		<CaretIcon
@@ -87,7 +93,6 @@ function Dropdown<T>(props: Props<T>): React.ReactElement {
 				store={ store }
 				options={ options }
 				onChange={ onChange }
-				field={ fieldRef.current }
 			/>
 
 		</div>

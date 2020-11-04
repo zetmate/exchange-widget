@@ -4,7 +4,8 @@ import { observer } from 'mobx-react';
 import { Theme, useTheme } from '../../../../styles/theme';
 import { Option, DropdownStore, OnChange } from '../types';
 import DropdownOption from '../Option';
-import { isNil } from '../../../../helpers/utils';
+import { generateHash, isFunction, isNil } from '../../../../helpers/utils';
+import { Container } from './OptionsList.styled';
 
 type Props<T> = React.PropsWithChildren<{
 	/**
@@ -21,17 +22,12 @@ type Props<T> = React.PropsWithChildren<{
 	 * Change event handler
 	 */
 	onChange: OnChange<T>;
-
-	/**
-	 * Field wrapper html element
-	 */
-	field: HTMLDivElement;
 }>
 
 /**
  * Space needed to render list. Value is a (space / height) ratio
  */
-const REQUIRED_SPACE_RATIO = 0.05;
+const REQUIRED_SPACE_RATIO = 0.3;
 
 /**
  * Checks whether list should be on top of the field or at the bottom
@@ -42,7 +38,7 @@ const checkIfShouldBeAbove = (bottom: number): boolean => {
 	const requiredSpacePX = window.innerHeight * REQUIRED_SPACE_RATIO;
 
 	// Check if there's enough space left
-	return bottom + requiredSpacePX < REQUIRED_SPACE_RATIO;
+	return window.innerHeight - bottom < requiredSpacePX;
 };
 
 /**
@@ -60,10 +56,12 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 	if (process.env.NODE_ENV === 'test' && isNaN(height)) {
 		return {};
 	}
+	// Check where to render the list
+	const isAbove = checkIfShouldBeAbove(bottom);
 
 	// Calculate position
-	const position = checkIfShouldBeAbove(bottom)
-		? { bottom: bottom + height, left }
+	const position = isAbove
+		? { bottom: window.innerHeight - bottom + height, left }
 		: { top: top + height, left }
 	;
 
@@ -73,7 +71,24 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 		position: 'absolute' as const,
 		zIndex: theme.zIndex.modal,
 		overflow: 'hidden' as const,
+
+		// Remove overlapping border
+		...(isAbove ? { borderBottom: 'none' } : { borderTop: 'none' }),
 	};
+};
+
+/*
+ *  Constants for tests
+ */
+const OPTIONS_SPY_NAME: any = generateHash();
+
+const traceMemoryLeaks = (): void => {
+	// For tracing memory leaks
+	if (process.env.NODE_ENV === 'test') {
+		const spyFunc = window[OPTIONS_SPY_NAME] as any;
+
+		isFunction(spyFunc) && spyFunc();
+	}
 };
 
 /**
@@ -81,31 +96,38 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
  */
 function OptionsList<T>(props: Props<T>): React.ReactElement {
 
-	const { store, onChange, field, options = [] } = props;
+	const { store, onChange, options = [] } = props;
 	const theme = useTheme();
 
 	const [style, setStyle] = useState({});
 
 	// Style for the wrapping element (positioning + etc)
 	const updateWrapperStyle = useCallback(() => {
-
 		// Do nothing if not open or field elm does not exist yet
-		if (isNil(field) || !store.isOpen) {
+		if (isNil(store.field)) {
 			return;
 		}
 
 		// Compute position and other styles
-		setStyle(getWrapperStyle(field, theme));
+		setStyle(getWrapperStyle(store.field, theme));
 
-	}, [field, store.isOpen, theme]);
+	}, [store?.field, theme]);
 
 	// Update position on resize and parameters change
 	useEffect(() => {
 		updateWrapperStyle();
-		window.addEventListener('resize', updateWrapperStyle);
+
+		// NB: need to define this to make sure that add and
+		// remove listeners have the same callback reference
+		const handler = (): void => {
+			traceMemoryLeaks();
+			updateWrapperStyle();
+		};
+
+		window.addEventListener('resize', handler);
 
 		return () => {
-			window.removeEventListener('resize', updateWrapperStyle);
+			window.removeEventListener('resize', handler);
 		};
 	}, [updateWrapperStyle]);
 
@@ -130,12 +152,16 @@ function OptionsList<T>(props: Props<T>): React.ReactElement {
 	}
 
 	return (
-		<div style={ style }>
+		<Container style={ style }>
 			{ optionsElms }
-		</div>
+		</Container>
 	);
 }
 
 OptionsList.displayName = 'OptionsList';
+
+export {
+	OPTIONS_SPY_NAME,
+};
 
 export default observer(OptionsList);

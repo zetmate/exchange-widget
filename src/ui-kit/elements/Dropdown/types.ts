@@ -17,6 +17,7 @@ type OptionWithId<T> = Option<T> & {
 type DropdownStore<T> = {
 	isOpen: boolean;
 	currentOption: OptionWithId<T>;
+	field: HTMLDivElement;
 }
 
 type OnChange<T> = (value: T) => void;

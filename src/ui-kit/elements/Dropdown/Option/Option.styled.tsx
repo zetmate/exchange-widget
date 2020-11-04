@@ -7,9 +7,9 @@ type OptionProps = StyledProps & {
 
 const getOptionBg = (p: OptionProps): string => {
 	if (p.isActive) {
-		return p.theme.colors.main;
+		return 'rgba(255, 255, 255, 0.2)';
 	}
-	return p.theme.colors.bg;
+	return 'transparent';
 };
 
 const StyledOption = styled.div<OptionProps>`
@@ -21,7 +21,7 @@ const StyledOption = styled.div<OptionProps>`
 	transition: background 0.4s;
 
 	&:hover {
-		background: ${ (p: OptionProps) => p.theme.colors.transparentWhite };
+		background: ${ (p: OptionProps) => p.theme.colors.invisibleWhite };
 	}
 `;
 

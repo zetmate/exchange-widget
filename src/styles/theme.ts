@@ -26,6 +26,12 @@ type Theme = {
 		semiBold: number;
 	};
 
+	fontSizes: {
+		regular: string | number;
+		large: string | number;
+		small: string | number;
+	};
+
 	zIndex: {
 		modal: number;
 	};
@@ -63,6 +69,12 @@ const mainTheme: Theme = {
 	fontWeights: {
 		regular: 400,
 		semiBold: 500,
+	},
+
+	fontSizes: {
+		regular: '2.5vh',
+		small: '1.5vh',
+		large: '4vh',
 	},
 
 	zIndex: {

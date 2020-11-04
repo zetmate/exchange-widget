@@ -22,6 +22,7 @@ const GlobalStyles = createGlobalStyle<StyledProps>`
 	body {
 		font-family: ${ p => p.theme.fontFamily }, sans-serif;
 		font-weight: ${ p => p.theme.fontWeights.regular };
+		font-size: ${ p => p.theme.fontSizes.regular };
 
 		color: ${ p => p.theme.colors.text };
 		background: ${ p => p.theme.colors.outerBg };
