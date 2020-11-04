@@ -11,6 +11,7 @@ import { Simulate } from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 
 import { noop, renderWithDeps } from '../../../helpers';
+import { OPTIONS_SPY_NAME } from './OptionsList';
 import Dropdown, { DD_FIELD_TEST_ID } from './index';
 
 describe('Dropdown component', () => {
@@ -130,5 +131,24 @@ describe('Dropdown component', () => {
 		Simulate.click(option);
 		await waitFor(() => expect(handler).toBeCalledTimes(1));
 		await waitFor(() => expect(handler).toBeCalledWith(2));
+	});
+
+	it('Should remove resize event listener after unmount', async () => {
+
+		window[OPTIONS_SPY_NAME] = jest.fn() as any;
+
+		const { unmount } = renderWithDeps(
+			<Dropdown
+				options={ options }
+				onChange={ noop }
+			/>,
+		);
+
+		const event = new Event('resize');
+
+		unmount();
+		window.dispatchEvent(event);
+
+		await waitFor(() => expect(window[OPTIONS_SPY_NAME]).not.toBeCalled());
 	});
 });

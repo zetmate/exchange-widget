@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Theme, useTheme } from '../../../../styles/theme';
 import { Option, DropdownStore, OnChange } from '../types';
 import DropdownOption from '../Option';
-import { isNil } from '../../../../helpers/utils';
+import { generateHash, isFunction, isNil } from '../../../../helpers/utils';
 
 type Props<T> = React.PropsWithChildren<{
 	/**
@@ -76,6 +76,20 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 	};
 };
 
+/*
+ *  Constants for tests
+ */
+const OPTIONS_SPY_NAME: any = generateHash();
+
+const traceMemoryLeaks = (): void => {
+	// For tracing memory leaks
+	if (process.env.NODE_ENV === 'test') {
+		const spyFunc = window[OPTIONS_SPY_NAME] as any;
+
+		isFunction(spyFunc) && spyFunc();
+	}
+};
+
 /**
  * Dropdown Options list component
  */
@@ -102,10 +116,18 @@ function OptionsList<T>(props: Props<T>): React.ReactElement {
 	// Update position on resize and parameters change
 	useEffect(() => {
 		updateWrapperStyle();
-		window.addEventListener('resize', updateWrapperStyle);
+
+		// NB: need to define this to make sure that add and
+		// remove listeners have the same callback reference
+		const handler = (): void => {
+			traceMemoryLeaks();
+			updateWrapperStyle();
+		};
+
+		window.addEventListener('resize', handler);
 
 		return () => {
-			window.removeEventListener('resize', updateWrapperStyle);
+			window.removeEventListener('resize', handler);
 		};
 	}, [updateWrapperStyle]);
 
@@ -137,5 +159,9 @@ function OptionsList<T>(props: Props<T>): React.ReactElement {
 }
 
 OptionsList.displayName = 'OptionsList';
+
+export {
+	OPTIONS_SPY_NAME,
+};
 
 export default observer(OptionsList);
