@@ -27,7 +27,7 @@ type Props<T> = React.PropsWithChildren<{
 /**
  * Space needed to render list. Value is a (space / height) ratio
  */
-const REQUIRED_SPACE_RATIO = 0.05;
+const REQUIRED_SPACE_RATIO = 0.3;
 
 /**
  * Checks whether list should be on top of the field or at the bottom
@@ -38,7 +38,7 @@ const checkIfShouldBeAbove = (bottom: number): boolean => {
 	const requiredSpacePX = window.innerHeight * REQUIRED_SPACE_RATIO;
 
 	// Check if there's enough space left
-	return bottom + requiredSpacePX < REQUIRED_SPACE_RATIO;
+	return window.innerHeight - bottom < requiredSpacePX;
 };
 
 /**
@@ -56,16 +56,14 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 	if (process.env.NODE_ENV === 'test' && isNaN(height)) {
 		return {};
 	}
+	// Check where to render the list
+	const isAbove = checkIfShouldBeAbove(bottom);
 
 	// Calculate position
-	const position = checkIfShouldBeAbove(bottom)
-		? { bottom: bottom + height, left }
+	const position = isAbove
+		? { bottom: window.innerHeight - bottom + height, left }
 		: { top: top + height, left }
 	;
-
-	console.log('window height', window.innerHeight);
-	console.log('top', top);
-	console.log('position', position);
 
 	return {
 		...position,
@@ -73,6 +71,9 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 		position: 'absolute' as const,
 		zIndex: theme.zIndex.modal,
 		overflow: 'hidden' as const,
+
+		// Remove overlapping border
+		...(isAbove ? { borderBottom: 'none' } : { borderTop: 'none' }),
 	};
 };
 

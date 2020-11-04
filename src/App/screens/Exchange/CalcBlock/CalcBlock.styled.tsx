@@ -18,14 +18,15 @@ const getContainerBg = (p: ContainerProps): string => {
 const Container = styled(FlexRowBetween)<ContainerProps>`
 	width: 100%;
 	height: 50%;
-	
+
 	align-items: center;
 
 	background: ${ getContainerBg };
 `;
 
 const InputWrapper = styled.div`
-	width: 30%;
+	width: 45%;
+	max-width: 45vh;
 	padding: 0 5vh;
 `;
 

@@ -22,9 +22,10 @@ const getBackground = (p: FieldProps): string => {
 };
 
 const Field = styled(FlexRowCenter)<FieldProps>`
-	height: 5vh;
-	padding: 1vh;
+	height: 10vh;
+	padding: 2.2vh;
 
+	font-size: ${ (p: FieldProps) => p.theme.fontSizes.large };
 	border: solid 2px ${ getBorderColor };
 
 	color: ${ (p: FieldProps) => p.theme.colors.white };
@@ -39,6 +40,7 @@ const Field = styled(FlexRowCenter)<FieldProps>`
 
 const StyledInput = styled.input`
 	flex: 1 0 auto;
+	max-width: 100%;
 	height: 100%;
 
 	border: none;
