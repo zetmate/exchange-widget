@@ -30,6 +30,11 @@ type Props<T> = React.PropsWithChildren<{
 	onChange?: OnChange<T>;
 }>
 
+/*
+ * Test constants
+ */
+const DD_FIELD_TEST_ID = 'dropdown__field';
+
 /**
  * Dropdown component
  */
@@ -62,8 +67,11 @@ function Dropdown<T>(props: Props<T>): React.ReactElement {
 
 	return (
 		<div>
-			<div ref={ fieldRef } onClick={ onClick }>
-
+			<div
+				ref={ fieldRef }
+				onClick={ onClick }
+				data-testid={ DD_FIELD_TEST_ID }
+			>
 				<Field
 					isFocused={ store.isOpen }
 					justifyContent="space-between"
@@ -91,5 +99,6 @@ Dropdown.displayName = 'Dropdown';
 export {
 	Props as DropdownProps,
 	Option as DropdownOption,
+	DD_FIELD_TEST_ID,
 };
 export default observer(Dropdown);
