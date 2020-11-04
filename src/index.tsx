@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App, { routes } from './App';
+import { GlobalDependencies } from './common';
 
 // Styles
 import './styles/css/index.css';
 import GlobalStyles from './styles/GlobalStyles';
 import { mainTheme } from './styles/theme';
-import GlobalDependencies from './common/GlobalDependencies';
 
 /**
  * Root component with contexts and other utils wrappers

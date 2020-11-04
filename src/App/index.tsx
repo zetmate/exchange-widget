@@ -9,7 +9,7 @@ import { AppContainer } from './App.styled';
 /**
  * Redirect to default route
  */
-const IndexRedirect = () => (
+const IndexRedirect = (): React.ReactElement => (
 	<Redirect to={ routes.wallet } />
 );
 

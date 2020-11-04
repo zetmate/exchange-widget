@@ -1,10 +1,15 @@
 import styled from 'styled-components';
-import { FlexCenter, FlexRowBetween } from '../../layout';
+import { FlexCenter, FlexColumn, FlexRowBetween } from '../../layout';
+
+const Self = styled(FlexColumn)`
+	width: 100%;
+	height: 100%;
+`;
 
 const SelfContainer = styled(FlexRowBetween)`
 	width: 100%;
-	height: 100%;
-	
+	flex: 1 0 auto;
+
 	padding: 0 2%;
 
 	align-items: center;
@@ -32,6 +37,7 @@ const DotsContainer = styled(FlexCenter)`
 `;
 
 export {
+	Self,
 	SelfContainer,
 	ContentContainer,
 	ArrowContainer,

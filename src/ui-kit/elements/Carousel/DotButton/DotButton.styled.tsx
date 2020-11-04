@@ -7,7 +7,7 @@ type DotProps = StyledProps & {
 	isActive: boolean;
 };
 
-const getDotBg = (p: DotProps) => {
+const getDotBg = (p: DotProps): string => {
 	if (p.isActive) {
 		return p.theme.colors.white;
 	}

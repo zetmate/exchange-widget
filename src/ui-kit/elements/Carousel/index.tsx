@@ -8,6 +8,7 @@ import {
 	ArrowContainer,
 	ContentContainer,
 	DotsContainer,
+	Self,
 	SelfContainer,
 } from './Carousel.styled';
 
@@ -40,7 +41,7 @@ const RIGHT_ARROW_TEST_ID = 'carousel__arrow-right';
 /**
  * Carousel component
  */
-const Carousel: React.FC<Props> = observer((props) => {
+const Carousel: React.FC<Props> = observer(props => {
 
 	const { items, ItemsContainer } = props;
 	const theme = useTheme();
@@ -79,7 +80,7 @@ const Carousel: React.FC<Props> = observer((props) => {
 	}), [theme]);
 
 	return (
-		<>
+		<Self>
 			<SelfContainer>
 				<ArrowContainer
 					onClick={ store.prev.bind(store) }
@@ -110,7 +111,7 @@ const Carousel: React.FC<Props> = observer((props) => {
 			<DotsContainer data-testid={ DOT_CONTAINER_TEST_ID }>
 				{ dots }
 			</DotsContainer>
-		</>
+		</Self>
 	);
 });
 

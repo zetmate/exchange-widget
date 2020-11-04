@@ -25,6 +25,10 @@ type Theme = {
 		regular: number;
 		semiBold: number;
 	};
+
+	zIndex: {
+		modal: number;
+	};
 };
 
 const blueDarkColorTheme: Theme['colors'] = {
@@ -59,6 +63,10 @@ const mainTheme: Theme = {
 	fontWeights: {
 		regular: 400,
 		semiBold: 500,
+	},
+
+	zIndex: {
+		modal: 100,
 	},
 };
 

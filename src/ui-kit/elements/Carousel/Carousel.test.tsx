@@ -12,8 +12,6 @@ import Carousel, {
 	RIGHT_ARROW_TEST_ID,
 } from './index';
 
-import click = Simulate.click;
-
 describe('Carousel component', () => {
 
 	afterEach(() => {
@@ -85,7 +83,7 @@ describe('Carousel component', () => {
 
 		const index = 2;
 
-		click(dots[index]);
+		Simulate.click(dots[index]);
 
 		const item = await findByText(container, items[index]);
 
@@ -105,7 +103,7 @@ describe('Carousel component', () => {
 			LEFT_ARROW_TEST_ID,
 		);
 
-		click(arrow);
+		Simulate.click(arrow);
 
 		const item = await findByText(container, items[items.length - 1]);
 
@@ -125,7 +123,7 @@ describe('Carousel component', () => {
 			RIGHT_ARROW_TEST_ID,
 		);
 
-		click(arrow);
+		Simulate.click(arrow);
 
 		const item = await findByText(container, items[1]);
 
