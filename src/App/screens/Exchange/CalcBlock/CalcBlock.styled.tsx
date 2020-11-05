@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { CalcType } from '../types';
-import { StyledProps } from '../../../../types';
 import { FlexColumn, FlexRowBetween } from '../../../../ui-kit/layout';
+import { StyledProps } from '../../../../types';
+import { CalcType } from '../types';
 
 type ContainerProps = StyledProps & {
 	calcType: CalcType;

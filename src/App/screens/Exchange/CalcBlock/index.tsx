@@ -11,6 +11,7 @@ import {
 import { Currency, CurrencyCode } from '../../../../types';
 import { isNil, roundTo } from '../../../../helpers/utils';
 import { currencies } from '../../../../common/data';
+import app from '../../../store';
 import { CalcType } from '../types';
 import exchange from '../store';
 
@@ -20,7 +21,6 @@ import {
 	InfoRight,
 	InputWrapper,
 } from './CalcBlock.styled';
-import app from '../../../store';
 
 type Props = {
 	type: CalcType;

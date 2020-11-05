@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import axios, { AxiosResponse } from 'axios';
 
-import { Balance, Currency, RatesResponse } from '../../../types';
+import { Currency, RatesResponse } from '../../../types';
 import { currencies, currenciesArr } from '../../../common/data';
 import { get, isNil } from '../../../helpers/utils';
 import app from '../../store';

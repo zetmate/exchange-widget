@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import {
 	FlexColumn,
-	FlexColumnCenter,
 	FlexRowCenter,
 } from '../../../ui-kit/layout';
 
@@ -39,18 +38,6 @@ const BalanceContainer = styled.div`
 
 	padding-bottom: 2%;
 `;
-
-type HistoryProps = StyledProps & {
-	isEmpty: boolean;
-}
-
-const getHistoryAlignment = (p: HistoryProps): string => {
-	if (p.isEmpty) {
-		return 'center';
-	}
-
-	return 'flex start';
-};
 
 export {
 	Container,
