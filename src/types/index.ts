@@ -30,8 +30,10 @@ export type Balance = { [key in CurrencyCode]: number };
 
 export type ExchangeRecord = {
 	operation: 'to' | 'from';
-	changeInThis: string;
-	changeInOther: string;
+	currency: CurrencyCode;
+
+	changeInThis: number;
+	changeInOther: number;
 }
 
 export type ExchangeHistory = { [key in CurrencyCode]: ExchangeRecord[] };

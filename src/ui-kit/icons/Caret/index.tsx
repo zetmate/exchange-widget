@@ -5,8 +5,8 @@ type Props = {
 	direction: 'left' | 'right' | 'down' | 'up';
 	size: string;
 	color: string;
-	hoverColor: string;
 
+	hoverColor?: string;
 	strokeWidth?: number;
 	isSolid?: boolean;
 }
@@ -53,15 +53,13 @@ const CaretIcon: React.FC<Props> = React.memo(props => {
 
 	// On hover
 	const onMouseOver = useCallback(() => {
-		setColor(hoverColor);
-	}, [hoverColor]);
+		setColor(hoverColor || color);
+	}, [hoverColor, color]);
 
 	// On hover finished
 	const onMouseOut = useCallback(() => {
 		setColor(color);
 	}, [color]);
-
-	console.log('curent', currentColor);
 
 	return (
 		<SVG
