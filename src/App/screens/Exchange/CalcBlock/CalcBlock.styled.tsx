@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { CalcType } from '../types';
 import { StyledProps } from '../../../../types';
-import { FlexRowBetween } from '../../../../ui-kit/layout';
+import { FlexColumn, FlexRowBetween } from '../../../../ui-kit/layout';
 
 type ContainerProps = StyledProps & {
 	calcType: CalcType;
@@ -11,7 +11,7 @@ type ContainerProps = StyledProps & {
 type InputWrapperProps = StyledProps & {
 	isDisabled: boolean;
 	isLoading: boolean;
-	isInvalidValue: boolean;
+	hasInvalidValue: boolean;
 }
 
 /*
@@ -51,14 +51,14 @@ const getInputWrapperCursor = (p: InputWrapperProps): string => {
 };
 
 const getInputColor = (p: InputWrapperProps): string => {
-	if (p.isInvalidValue) {
+	if (p.hasInvalidValue) {
 		return p.theme.colors.transparentWhite;
 	}
 
 	return p.theme.colors.text;
 };
 
-const InputWrapper = styled.div<InputWrapperProps>`
+const InputWrapper = styled(FlexColumn)<InputWrapperProps>`
 	width: 45%;
 	max-width: 45vh;
 	padding: 0 5vh;
@@ -73,7 +73,21 @@ const InputWrapper = styled.div<InputWrapperProps>`
 	}
 `;
 
+/**
+ * Info
+ */
+const InfoLeft = styled.div`
+	padding-top: 2vh;
+`;
+
+const InfoRight = styled.div`
+	padding-top: 2vh;
+	margin-left: auto;
+`;
+
 export {
 	Container,
 	InputWrapper,
+	InfoLeft,
+	InfoRight,
 };

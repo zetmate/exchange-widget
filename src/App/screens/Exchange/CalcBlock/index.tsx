@@ -11,10 +11,16 @@ import {
 import { Currency, CurrencyCode } from '../../../../types';
 import { isNil, roundTo } from '../../../../helpers/utils';
 import { currencies } from '../../../../common/data';
-import app from '../../../store';
 import { CalcType } from '../types';
 import exchange from '../store';
-import { Container, InputWrapper } from './CalcBlock.styled';
+
+import {
+	Container,
+	InfoLeft,
+	InfoRight,
+	InputWrapper,
+} from './CalcBlock.styled';
+import app from '../../../store';
 
 type Props = {
 	type: CalcType;
@@ -51,8 +57,12 @@ const CalcBlock: React.FC<Props> = observer(props => {
 	const input = useRef<InputControls>();
 
 	const values = exchange.values;
-	const currencyCode = values[type].currency.code;
 	const currentQuantity = values[type].quantity;
+
+	const {
+		code: currencyCode,
+		symbol: currencySymbol,
+	} = values[type].currency;
 
 	// Trace store value changes and update the input
 	useEffect(() => {
@@ -96,8 +106,22 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// Check if quantity is larger than maximum
-	const isLargerThanMax = currentQuantity > app.balance[currencyCode];
+	const balanceText = useMemo(() => {
+		const currencyBalance = app.balance[currencyCode];
+
+		return (
+			`You have ${ currencySymbol }${ currencyBalance }`
+		);
+	}, [currencyCode, currencySymbol]);
+
+	const rateText = useMemo(() => {
+		const { symbol: fromSymbol } = values.from.currency;
+		const { symbol: toSymbol } = values.to.currency;
+
+		return `${ fromSymbol }1 = ${ toSymbol }${ roundTo(exchange.rate, 2) }`;
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [exchange.rate, currencyCode]);
 
 	const isQntDisabled = values.from.currency.code === values.to.currency.code;
 	const isRateLoading = isNil(exchange.rate);
@@ -107,19 +131,21 @@ const CalcBlock: React.FC<Props> = observer(props => {
 			<InputWrapper
 				isDisabled={ false }
 				isLoading={ isRateLoading }
-				isInvalidValue={ false }
+				hasInvalidValue={ false }
 			>
 				<Dropdown<Currency>
 					defaultOption={ defaultOption }
 					options={ currencyOptions }
 					onChange={ onCurrencyChange }
 				/>
+				<InfoLeft>{ balanceText }</InfoLeft>
+
 			</InputWrapper>
 
 			<InputWrapper
 				isDisabled={ isQntDisabled }
 				isLoading={ isRateLoading }
-				isInvalidValue={ isLargerThanMax }
+				hasInvalidValue={ !exchange.canBeSubmitted }
 			>
 				<Input
 					type="float2"
@@ -128,6 +154,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 					onControlsReady={ setupInputControls }
 					isDisabled={ isQntDisabled }
 				/>
+				<InfoRight>{ rateText }</InfoRight>
 			</InputWrapper>
 
 		</Container>

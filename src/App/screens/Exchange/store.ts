@@ -1,9 +1,10 @@
 import { action, computed, observable } from 'mobx';
 import axios, { AxiosResponse } from 'axios';
 
-import { Currency, RatesResponse } from '../../../types';
+import { Balance, Currency, RatesResponse } from '../../../types';
 import { currencies, currenciesArr } from '../../../common/data';
 import { get, isNil } from '../../../helpers/utils';
+import app from '../../store';
 import { CalcType, ExchangeValues } from './types';
 
 const RATES_URL = 'https://api.exchangeratesapi.io/latest';
@@ -33,6 +34,11 @@ interface IExchange {
 	 * Exchange rate
 	 */
 	rate: number;
+
+	/**
+	 * Flag: is it possible to submit
+	 */
+	canBeSubmitted: boolean;
 
 	/**
 	 * Send changes to the server
@@ -70,6 +76,20 @@ class Exchange implements IExchange {
 
 	@computed get rate(): IExchange['rate'] {
 		return this._rate;
+	}
+
+	@computed get canBeSubmitted(): IExchange['canBeSubmitted'] {
+
+		const areCurrenciesValid = (
+			this._values.to.currency.code
+			!== this._values.from.currency.code
+		);
+
+		// Check if there's enough money
+		const { quantity, currency: { code } } = this._values.from;
+		const isEnoughMoney = quantity <= app.balance[code];
+
+		return areCurrenciesValid && isEnoughMoney;
 	}
 
 	/*
