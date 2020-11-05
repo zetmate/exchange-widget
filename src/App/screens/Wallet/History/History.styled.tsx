@@ -19,7 +19,6 @@ const Container = styled(FlexColumn)`
 `;
 
 const Label = styled(FlexCenter)`
-	height: 10vh;
 	color: ${ (p: StyledProps) => p.theme.colors.midMain }
 `;
 
