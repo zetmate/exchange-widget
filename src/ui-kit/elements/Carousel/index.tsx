@@ -2,7 +2,9 @@ import React, { useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
 
 import { useTheme } from '../../../styles/theme';
-import CaretIcon from '../../icons/Caret';
+import { noop } from '../../../helpers/utils';
+
+import { CaretIcon } from '../../icons';
 
 import {
 	ArrowContainer,
@@ -25,10 +27,16 @@ type Props = {
 	 * ItemsContainer
 	 */
 	ItemsContainer?: React.FC;
+
+	/**
+	 * On change handler (also called on mount)
+	 */
+	onChange?: (index: number) => void;
 }
 
 const defaultProps: Partial<Props> = {
 	ItemsContainer: ContentContainer,
+	onChange: noop,
 };
 
 /*
@@ -43,7 +51,7 @@ const RIGHT_ARROW_TEST_ID = 'carousel__arrow-right';
  */
 const Carousel: React.FC<Props> = observer(props => {
 
-	const { items, ItemsContainer } = props;
+	const { items, ItemsContainer, onChange } = props;
 	const theme = useTheme();
 
 	// NB: will be created once, during the first render
@@ -57,6 +65,14 @@ const Carousel: React.FC<Props> = observer(props => {
 		store.setSize(items.length);
 
 	}, [items.length, store]);
+
+	/**
+	 * Trace changes and call onChange handler
+	 */
+	useEffect(() => {
+		onChange(store.currentIndex);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [store.currentIndex]);
 
 	// Dot buttons
 	const dots = useMemo(() => {
@@ -77,6 +93,7 @@ const Carousel: React.FC<Props> = observer(props => {
 	const caretProps = useMemo(() => ({
 		size: '100%',
 		color: theme.colors.transparentWhite,
+		hoverColor: theme.colors.white,
 	}), [theme]);
 
 	return (

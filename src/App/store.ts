@@ -7,6 +7,8 @@ import {
 	ExchangeRecord,
 } from '../types';
 
+import { initialBalance, initialHistory } from '../common/data';
+
 /**
  * Interface for manipulating data shared between screens
  */
@@ -27,12 +29,6 @@ interface IAppStore {
 	addNewRecord(currency: CurrencyCode, record: ExchangeRecord): void;
 }
 
-const initialBalance: Balance = {
-	EUR: 1160.12,
-	GBP: 580.33,
-	USD: 250.51,
-};
-
 class AppStore implements IAppStore {
 
 	@observable balance: IAppStore['balance'] = initialBalance;
@@ -45,11 +41,7 @@ class AppStore implements IAppStore {
 		this._history[currency].push(record);
 	}
 
-	@observable private _history: IAppStore['history'] = {
-		EUR: [],
-		USD: [],
-		GBP: [],
-	};
+	@observable private _history: IAppStore['history'] = initialHistory;
 }
 
 const app = new AppStore();

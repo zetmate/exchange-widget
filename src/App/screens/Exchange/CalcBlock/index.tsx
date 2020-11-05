@@ -118,6 +118,10 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		const { symbol: fromSymbol } = values.from.currency;
 		const { symbol: toSymbol } = values.to.currency;
 
+		if (isNil(exchange.rate)) {
+			return 'loading...';
+		}
+
 		return `${ fromSymbol }1 = ${ toSymbol }${ roundTo(exchange.rate, 2) }`;
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps

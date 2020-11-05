@@ -8,6 +8,7 @@ type Theme = {
 
 		main: string;
 		lightMain: string;
+		midMain: string;
 		darkMain: string;
 
 		black: string;
@@ -40,9 +41,10 @@ type Theme = {
 const blueDarkColorTheme: Theme['colors'] = {
 	main: '#5e94de',
 	lightMain: '#7ba5de',
+	midMain: '#9ec6fd',
 	darkMain: '#3473c9',
 
-	black: '#2c3040',
+	black: '#2d3246',
 	darkGrey: '#41475f',
 
 	white: '#fff',
@@ -54,10 +56,10 @@ const blueDarkColorTheme: Theme['colors'] = {
 		return this.white;
 	},
 	get bg() {
-		return this.black;
+		return this.darkGrey;
 	},
 	get outerBg() {
-		return this.darkGrey;
+		return this.black;
 	},
 };
 
@@ -73,7 +75,7 @@ const mainTheme: Theme = {
 
 	fontSizes: {
 		regular: '2.5vmin',
-		small: '1.5vmin',
+		small: '1.8vmin',
 		large: '4vmin',
 	},
 

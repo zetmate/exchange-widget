@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { observer, useLocalStore } from 'mobx-react';
 
-import CaretIcon from '../../icons/Caret';
+import { CaretIcon } from '../../icons';
 import { useTheme } from '../../../styles/theme';
 import { Field } from '../Input/Input.styled';
 import { DropdownStore, OnChange, Option } from './types';
