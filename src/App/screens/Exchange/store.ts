@@ -110,7 +110,7 @@ class Exchange implements IExchange {
 				this.stopUpdatingRates();
 				this.startUpdatingRates();
 			} else {
-				this.fetchRates();
+				void this.fetchRates();
 			}
 		}
 	}
@@ -125,7 +125,7 @@ class Exchange implements IExchange {
 	}
 
 	@action startUpdatingRates(): void {
-		this.fetchRates();
+		void this.fetchRates();
 		// FIXME: change to 10 seconds
 		this.timerId = setInterval(this.fetchRates.bind(this), 360000);
 	}
@@ -180,7 +180,7 @@ class Exchange implements IExchange {
 	}
 
 	@action
-	private fetchRates(): void {
+	private async fetchRates(): Promise<void> {
 		const base = this._values.from.currency.code;
 
 		// Get all currency codes except the base one
@@ -199,13 +199,16 @@ class Exchange implements IExchange {
 		axios.get(RATES_URL, { params })
 			.then(
 				(response: AxiosResponse<RatesResponse>) => {
-					const codeTo = this._values.to.currency.code;
-					const rate = get<number>(response.data?.rates, codeTo, 1);
-
 					this._rates = response.data?.rates;
+
+					const codeTo = this._values.to.currency.code;
+					const rate = this._rates[codeTo] || 1;
 					this.setRate(rate);
 
 					return response;
+				},
+				err => {
+					console.error('Rates fetch failed with error', err);
 				},
 			)
 		;
