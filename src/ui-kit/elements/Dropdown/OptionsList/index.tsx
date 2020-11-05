@@ -62,7 +62,7 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 	// Calculate position
 	const position = isAbove
 		? { bottom: window.innerHeight - bottom + height, left }
-		: { top: top + height - 4 /* border */, left }
+		: { top: top + height, left }
 	;
 
 	return {
