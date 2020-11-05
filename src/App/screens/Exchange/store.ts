@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import axios, { AxiosResponse } from 'axios';
 
-import { Currency, RatesResponse } from '../../../types';
+import { Currency, ExchangeRecord, RatesResponse } from '../../../types';
 import { currencies, currenciesArr } from '../../../common/data';
 import { get, isNil } from '../../../helpers/utils';
 import app from '../../store';
@@ -43,7 +43,7 @@ interface IExchange {
 	/**
 	 * Send changes to the server
 	 */
-	submit(): Promise<void>;
+	submit(): void;
 
 	/**
 	 * Set new quantity
@@ -95,8 +95,33 @@ class Exchange implements IExchange {
 	/*
 	 * Public methods
 	 */
-	// TODO: implement me!
-	submit = (): ReturnType<IExchange['submit']> => Promise.resolve();
+	submit(): ReturnType<IExchange['submit']> {
+		const { to, from } = this._values;
+
+		// Save in history
+		const recordFrom: ExchangeRecord = {
+			operation: 'from',
+			currency: from.currency.code,
+
+			changeInThis: from.quantity,
+			changeInOther: to.quantity,
+		};
+
+		const recordTo: ExchangeRecord = {
+			operation: 'to',
+			currency: to.currency.code,
+
+			changeInThis: to.quantity,
+			changeInOther: from.quantity,
+		};
+
+		app.history[to.currency.code].push(recordFrom);
+		app.history[from.currency.code].push(recordTo);
+
+		// Update balance
+		app.balance[from.currency.code] -= from.quantity;
+		app.balance[to.currency.code] += to.quantity;
+	}
 
 	@action setCurrency(currency: Currency, calcType: CalcType): void {
 

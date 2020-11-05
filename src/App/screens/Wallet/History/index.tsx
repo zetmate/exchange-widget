@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { observer } from 'mobx-react';
 
+import { roundTo } from '../../../../helpers/utils';
 import { FlexCenter } from '../../../../ui-kit/layout';
 import { ExchangeIcon } from '../../../../ui-kit/icons';
 import { CurrencyCode } from '../../../../types';
@@ -62,7 +63,12 @@ const History: React.FC<Props> = observer(({ currency }) => {
 			return null;
 		}
 
-		return records.map((record, key) => {
+		const result: JSX.Element[] = [];
+
+		// Map records in reverse order to show the latest changes first
+		for (let i = records.length - 1; i >= 0; i--) {
+			const record = records[i];
+
 			const text = `Exchanged ${ record.operation } ${ record.currency }`;
 			const otherSymbol = currencies[record.currency].symbol;
 
@@ -70,13 +76,18 @@ const History: React.FC<Props> = observer(({ currency }) => {
 				? ['-', '+']
 				: ['+', '-']
 			;
+			const parsedQntThis = roundTo(record.changeInThis, 2);
+			const parsedQntOther = roundTo(record.changeInOther, 2);
+
 			const numbersText = [
-				`${ operators[0] }${ currencySymbol }${ record.changeInThis }`,
-				`${ operators[1] }${ otherSymbol }${ record.changeInOther }`,
+				`${ operators[0] }${ currencySymbol }${ parsedQntThis }`,
+				`${ operators[1] }${ otherSymbol }${ parsedQntOther }`,
 			];
 
-			return renderListItem(text, numbersText, key);
-		});
+			result.push(renderListItem(text, numbersText, i));
+		}
+
+		return result;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [records?.length, currency]);
 
