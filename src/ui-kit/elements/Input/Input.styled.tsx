@@ -46,10 +46,6 @@ const StyledInput = styled.input`
 	border: none;
 	color: inherit;
 	background: transparent;
-	
-	&:disabled {
-		cursor: not-allowed;
-	}
 `;
 
 export {

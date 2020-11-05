@@ -79,6 +79,7 @@ class Exchange implements IExchange {
 	submit = (): ReturnType<IExchange['submit']> => Promise.resolve();
 
 	@action setCurrency(currency: Currency, calcType: CalcType): void {
+
 		// Do nothing if has not changed
 		if (currency.code === this._values[calcType].currency.code) {
 			return;
@@ -89,14 +90,22 @@ class Exchange implements IExchange {
 
 		// Update values
 		this._values[calcType] = { quantity, currency };
-		this.syncQuantities('from');
 
 		// If not base currency, get rate from pre-fetched
 		if (calcType === 'to') {
-			this._rate = this._rates[currency.code];
+			const toCurr = this._values.to.currency.code;
+			const fromCurr = this._values.from.currency.code;
+
+			const areSame = toCurr === fromCurr;
+
+			this._rate = areSame ? 1 : this._rates[currency.code];
+
+			this.syncQuantities('from');
 		}
 		// Otherwise re-fetch rates
 		else {
+			this._rate = null;
+
 			if (this.timerId) {
 				this.stopUpdatingRates();
 				this.startUpdatingRates();
@@ -104,7 +113,6 @@ class Exchange implements IExchange {
 				this.fetchRates();
 			}
 		}
-		this._rate = null;
 	}
 
 	@action setQuantity(quantity: number, calcType: CalcType): void {
@@ -157,7 +165,7 @@ class Exchange implements IExchange {
 		const { quantity } = this._values[baseType];
 
 		const otherType = baseType === 'to' ? 'from' : 'to';
-		const ratio = baseType === 'to' ? this._rate : 1 / this._rate;
+		const ratio = baseType === 'from' ? this._rate : 1 / this._rate;
 
 		this._values[otherType].quantity = ratio * quantity;
 	}

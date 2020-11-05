@@ -9,11 +9,11 @@ import {
 } from '../../../../ui-kit/elements';
 
 import { Currency, CurrencyCode } from '../../../../types';
+import { isNil, roundTo } from '../../../../helpers/utils';
 import { currencies } from '../../../../common/data';
 import { CalcType } from '../types';
 import exchange from '../store';
 import { Container, InputWrapper } from './CalcBlock.styled';
-import { roundTo } from '../../../../helpers/utils';
 
 type Props = {
 	type: CalcType;
@@ -95,10 +95,14 @@ const CalcBlock: React.FC<Props> = observer(props => {
 	}, []);
 
 	const isQntDisabled = values.from.currency.code === values.to.currency.code;
+	const isRateLoading = isNil(exchange.rate);
 
 	return (
 		<Container calcType={ type }>
-			<InputWrapper isDisabled={ false }>
+			<InputWrapper
+				isDisabled={ false }
+				isLoading={ isRateLoading }
+			>
 				<Dropdown<Currency>
 					defaultOption={ defaultOption }
 					options={ currencyOptions }
@@ -106,7 +110,10 @@ const CalcBlock: React.FC<Props> = observer(props => {
 				/>
 			</InputWrapper>
 
-			<InputWrapper isDisabled={ isQntDisabled }>
+			<InputWrapper
+				isDisabled={ isQntDisabled }
+				isLoading={ isRateLoading }
+			>
 				<Input
 					type="float2"
 					onChange={ onQuantityChange }
