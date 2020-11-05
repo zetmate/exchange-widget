@@ -26,6 +26,16 @@ export type Currency = {
 	code: CurrencyCode;
 }
 
+export type Balance = { [key in CurrencyCode]: number };
+
+export type ExchangeRecord = {
+	operation: 'to' | 'from';
+	changeInThis: string;
+	changeInOther: string;
+}
+
+export type ExchangeHistory = { [key in CurrencyCode]: ExchangeRecord[] };
+
 /*
  * API
  */
