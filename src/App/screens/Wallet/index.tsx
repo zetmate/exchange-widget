@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { observer } from 'mobx-react';
 
 import { Carousel } from '../../../ui-kit/elements';
-
-const items = ['one', 'two', 'three'];
+import { currencies, currenciesArr } from '../../../common/data';
+import { roundTo } from '../../../helpers/utils';
+import app from '../../store';
+import { BalanceContainer, Container } from './Wallet.styled';
 
 /**
  * Wallet Screen component
  */
-const WalletScreen: React.FC = React.memo(() => {
+const WalletScreen: React.FC = observer(() => {
+
+	const balanceItems = useMemo(() => (
+		currenciesArr.map(code => (
+			`${ currencies[code].symbol }.${ roundTo(app.balance[code], 2) }`
+		))
+	), []);
+
 	return (
-		<>
-			<div style={ { height: '50%' } }>
-				<Carousel items={ items } />
-			</div>
-		</>
+		<Container>
+			<BalanceContainer>
+				<Carousel items={ balanceItems } />
+			</BalanceContainer>
+		</Container>
 	);
 });
 

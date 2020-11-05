@@ -77,6 +77,7 @@ const Carousel: React.FC<Props> = observer(props => {
 	const caretProps = useMemo(() => ({
 		size: '100%',
 		color: theme.colors.transparentWhite,
+		hoverColor: theme.colors.white,
 	}), [theme]);
 
 	return (

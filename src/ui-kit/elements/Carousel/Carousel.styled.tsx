@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+
 import { FlexCenter, FlexColumn, FlexRowBetween } from '../../layout';
+import { StyledProps } from '../../../types';
 
 const Self = styled(FlexColumn)`
 	width: 100%;
@@ -18,6 +20,9 @@ const SelfContainer = styled(FlexRowBetween)`
 const ArrowContainer = styled(FlexCenter)`
 	width: 15%;
 	height: 20%;
+
+	color: ${ (p: StyledProps) => p.theme.colors.white }
+	transition: color 0.3s;
 `;
 
 const ContentContainer = styled(FlexCenter)`

@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { SVG } from './Caret.styled';
 
 type Props = {
 	direction: 'left' | 'right' | 'down' | 'up';
 	size: string;
 	color: string;
+	hoverColor: string;
 
 	strokeWidth?: number;
 	isSolid?: boolean;
@@ -39,17 +41,30 @@ const getRotateValue = (direction: Props['direction']): number => {
  */
 const CaretIcon: React.FC<Props> = React.memo(props => {
 
-	const { direction, size, strokeWidth, isSolid, color } = props;
+	const { direction, size, strokeWidth, isSolid, color, hoverColor } = props;
+	const [currentColor, setColor] = useState<string>(color);
 
-	const fill = isSolid ? color : 'none';
+	const fill = isSolid ? currentColor : 'none';
 
 	// Caret direction
 	const styles = useMemo(() => ({
 		transform: `rotate(${ getRotateValue(direction) }deg)`,
 	}), [direction]);
 
+	// On hover
+	const onMouseOver = useCallback(() => {
+		setColor(hoverColor);
+	}, [hoverColor]);
+
+	// On hover finished
+	const onMouseOut = useCallback(() => {
+		setColor(color);
+	}, [color]);
+
+	console.log('curent', currentColor);
+
 	return (
-		<svg
+		<SVG
 			xmlns="http://www.w3.org/2000/svg"
 			className="icon icon-tabler icon-tabler-caret-up"
 			width={ size }
@@ -57,14 +72,16 @@ const CaretIcon: React.FC<Props> = React.memo(props => {
 			style={ styles }
 			viewBox="0 0 24 24"
 			strokeWidth={ strokeWidth }
-			stroke={ color }
+			stroke={ currentColor }
 			fill={ fill }
 			strokeLinecap="round"
 			strokeLinejoin="round"
+			onMouseOver={ onMouseOver }
+			onMouseOut={ onMouseOut }
 		>
 			<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 			<path d="M18 15l-6-6l-6 6h12" />
-		</svg>
+		</SVG>
 	);
 });
 
