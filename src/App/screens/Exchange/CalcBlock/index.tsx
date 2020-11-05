@@ -107,7 +107,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 	}, []);
 
 	const balanceText = useMemo(() => {
-		const currencyBalance = app.balance[currencyCode];
+		const currencyBalance = roundTo(app.balance[currencyCode], 2);
 
 		return (
 			`You have ${ currencySymbol }${ currencyBalance }`

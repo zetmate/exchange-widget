@@ -66,6 +66,17 @@ interface IExchange {
 	stopUpdatingRates(): void;
 }
 
+const initialValues = {
+	from: {
+		currency: currencies.GBP,
+		quantity: 0,
+	},
+	to: {
+		currency: currencies.EUR,
+		quantity: 0,
+	},
+};
+
 class Exchange implements IExchange {
 	/*
 	 * Public props
@@ -121,6 +132,9 @@ class Exchange implements IExchange {
 		// Update balance
 		app.balance[from.currency.code] -= from.quantity;
 		app.balance[to.currency.code] += to.quantity;
+
+		// Set initial values
+		this._values = initialValues;
 	}
 
 	@action setCurrency(currency: Currency, calcType: CalcType): void {
@@ -189,16 +203,7 @@ class Exchange implements IExchange {
 	@observable private _rate: IExchange['rate'] = null;
 	@observable private _rates: RatesResponse['rates'] = null;
 
-	@observable private _values: IExchange['values'] = {
-		from: {
-			currency: currencies.GBP,
-			quantity: 0,
-		},
-		to: {
-			currency: currencies.EUR,
-			quantity: 0,
-		},
-	};
+	@observable private _values: IExchange['values'] = initialValues;
 
 	private timerId: any = null;
 
