@@ -11,6 +11,7 @@ import {
 import { Currency, CurrencyCode } from '../../../../types';
 import { isNil, roundTo } from '../../../../helpers/utils';
 import { currencies } from '../../../../common/data';
+import app from '../../../store';
 import { CalcType } from '../types';
 import exchange from '../store';
 import { Container, InputWrapper } from './CalcBlock.styled';
@@ -49,8 +50,9 @@ const CalcBlock: React.FC<Props> = observer(props => {
 	const { type } = props;
 	const input = useRef<InputControls>();
 
-	const currentQuantity = exchange.values[type].quantity;
 	const values = exchange.values;
+	const currencyCode = values[type].currency.code;
+	const currentQuantity = values[type].quantity;
 
 	// Trace store value changes and update the input
 	useEffect(() => {
@@ -94,6 +96,9 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Check if quantity is larger than maximum
+	const isLargerThanMax = currentQuantity > app.balance[currencyCode];
+
 	const isQntDisabled = values.from.currency.code === values.to.currency.code;
 	const isRateLoading = isNil(exchange.rate);
 
@@ -102,6 +107,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 			<InputWrapper
 				isDisabled={ false }
 				isLoading={ isRateLoading }
+				isInvalidValue={ false }
 			>
 				<Dropdown<Currency>
 					defaultOption={ defaultOption }
@@ -113,6 +119,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 			<InputWrapper
 				isDisabled={ isQntDisabled }
 				isLoading={ isRateLoading }
+				isInvalidValue={ isLargerThanMax }
 			>
 				<Input
 					type="float2"

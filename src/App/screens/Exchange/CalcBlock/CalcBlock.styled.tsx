@@ -8,9 +8,10 @@ type ContainerProps = StyledProps & {
 	calcType: CalcType;
 }
 
-type InputWrapperProps = {
+type InputWrapperProps = StyledProps & {
 	isDisabled: boolean;
 	isLoading: boolean;
+	isInvalidValue: boolean;
 }
 
 /*
@@ -49,6 +50,14 @@ const getInputWrapperCursor = (p: InputWrapperProps): string => {
 	return 'auto';
 };
 
+const getInputColor = (p: InputWrapperProps): string => {
+	if (p.isInvalidValue) {
+		return p.theme.colors.transparentWhite;
+	}
+
+	return p.theme.colors.text;
+};
+
 const InputWrapper = styled.div<InputWrapperProps>`
 	width: 45%;
 	max-width: 45vh;
@@ -57,6 +66,10 @@ const InputWrapper = styled.div<InputWrapperProps>`
 	&,
 	input {
 		cursor: ${ getInputWrapperCursor };
+	}
+	
+	input {
+		color: ${ getInputColor }
 	}
 `;
 

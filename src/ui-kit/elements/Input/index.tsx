@@ -109,7 +109,7 @@ const Input: React.FC<Props> = React.memo(props => {
 		// Send controls object
 		onControlsReady(controls);
 
-	}, [onControlsReady, setValue, inputRef]);
+	}, [onControlsReady, setValue, inputRef, onChange]);
 
 	const valueRegex = useMemo(() => {
 		switch (type) {
