@@ -138,7 +138,7 @@ function OptionsList<T>(props: Props<T>): React.ReactElement {
 			<DropdownOption
 				{ ...option }
 				key={ key }
-				id={ key }
+				id={ key + 1 }
 				store={ store }
 				onSelect={ onChange }
 			/>

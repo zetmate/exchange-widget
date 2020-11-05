@@ -16,6 +16,7 @@
 		"styled-components": "^5"
 	},
 	"dependencies": {
+		"axios": "^0.21.0",
 		"mobx": "^5.15.7",
 		"mobx-react": "^6.3.1",
 		"react": "^16.14.0",

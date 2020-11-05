@@ -8,6 +8,10 @@ type ContainerProps = StyledProps & {
 	calcType: CalcType;
 }
 
+type InputWrapperProps = {
+	isDisabled: boolean;
+}
+
 const getContainerBg = (p: ContainerProps): string => {
 	if (p.calcType === 'to') {
 		return p.theme.colors.darkMain;
@@ -24,7 +28,7 @@ const Container = styled(FlexRowBetween)<ContainerProps>`
 	background: ${ getContainerBg };
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<InputWrapperProps>`
 	width: 45%;
 	max-width: 45vh;
 	padding: 0 5vh;

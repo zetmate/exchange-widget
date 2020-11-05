@@ -17,6 +17,9 @@ const currencies: { [key in CurrencyCode]: Currency } = {
 	},
 };
 
+const currenciesArr: CurrencyCode[] = ['USD', 'EUR', 'GBP'];
+
 export {
 	currencies,
+	currenciesArr,
 };

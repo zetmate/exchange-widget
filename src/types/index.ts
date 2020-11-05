@@ -25,3 +25,12 @@ export type Currency = {
 	symbol: string;
 	code: CurrencyCode;
 }
+
+/*
+ * API
+ */
+export type RatesResponse = {
+	rates: { [key in CurrencyCode]: number };
+	base: CurrencyCode;
+	date: string;
+}

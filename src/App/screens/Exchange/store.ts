@@ -1,10 +1,28 @@
 import { action, computed, observable } from 'mobx';
+import axios, { AxiosResponse } from 'axios';
 
-import { Currency } from '../../../types';
-import { currencies } from '../../../common/data';
-import { get } from '../../../helpers/utils';
+import { Currency, RatesResponse } from '../../../types';
+import { currencies, currenciesArr } from '../../../common/data';
+import { get, isNil } from '../../../helpers/utils';
 import { CalcType, ExchangeValues } from './types';
 
+const RATES_URL = 'https://api.exchangeratesapi.io/latest';
+
+type RatesParams = {
+	/**
+	 * Base currency
+	 */
+	base: string;
+
+	/**
+	 * Fetch only currencies specified in this list
+	 */
+	symbols: string;
+}
+
+/**
+ * Interface for exchanging currencies
+ */
 interface IExchange {
 	/**
 	 * Get current data
@@ -29,12 +47,17 @@ interface IExchange {
 	/**
 	 * Select another currency
 	 */
-	setCurrency(currency: Currency, rate: number, calcType: CalcType): void;
+	setCurrency(currency: Currency, calcType: CalcType): void;
 
 	/**
-	 * Set exchange rate
+	 * Start updating rates every 10 seconds
 	 */
-	setRate(newRate: number): void;
+	startUpdatingRates(): void;
+
+	/**
+	 * Stop updating rates
+	 */
+	stopUpdatingRates(): void;
 }
 
 class Exchange implements IExchange {
@@ -55,18 +78,33 @@ class Exchange implements IExchange {
 	// TODO: implement me!
 	submit = (): ReturnType<IExchange['submit']> => Promise.resolve();
 
-	@action setCurrency(
-		currency: Currency,
-		rate: number,
-		calcType: CalcType,
-	): void {
+	@action setCurrency(currency: Currency, calcType: CalcType): void {
+		// Do nothing if has not changed
+		if (currency.code === this._values[calcType].currency.code) {
+			return;
+		}
+
 		// Get quantity
 		const quantity = get(this._values, `${ calcType }.quantity`);
-		this._rate = rate;
 
 		// Update values
 		this._values[calcType] = { quantity, currency };
-		this.syncQuantities(calcType);
+		this.syncQuantities('from');
+
+		// If not base currency, get rate from pre-fetched
+		if (calcType === 'to') {
+			this._rate = this._rates[currency.code];
+		}
+		// Otherwise re-fetch rates
+		else {
+			if (this.timerId) {
+				this.stopUpdatingRates();
+				this.startUpdatingRates();
+			} else {
+				this.fetchRates();
+			}
+		}
+		this._rate = null;
 	}
 
 	@action setQuantity(quantity: number, calcType: CalcType): void {
@@ -78,15 +116,25 @@ class Exchange implements IExchange {
 		this.syncQuantities(calcType);
 	}
 
-	@action setRate(newRate: number): void {
-		this._rate = newRate;
-		this._values.from.quantity = this._values.to.quantity * newRate;
+	@action startUpdatingRates(): void {
+		this.fetchRates();
+		// FIXME: change to 10 seconds
+		this.timerId = setInterval(this.fetchRates.bind(this), 360000);
+	}
+
+	stopUpdatingRates(): void {
+		if (isNil(this.timerId)) {
+			return;
+		}
+		clearTimeout(this.timerId);
+		this.timerId = null;
 	}
 
 	/*
 	 * Private props
 	 */
-	@observable private _rate: IExchange['rate'] = 0.74;
+	@observable private _rate: IExchange['rate'] = null;
+	@observable private _rates: RatesResponse['rates'] = null;
 
 	@observable private _values: IExchange['values'] = {
 		from: {
@@ -99,16 +147,60 @@ class Exchange implements IExchange {
 		},
 	};
 
+	private timerId: any = null;
+
 	/*
 	 * Private methods
 	 */
-	@action syncQuantities(typeThatChanged: CalcType): void {
-		const { quantity } = this._values[typeThatChanged];
+	@action
+	private syncQuantities(baseType: CalcType): void {
+		const { quantity } = this._values[baseType];
 
-		const otherType = typeThatChanged === 'to' ? 'from' : 'to';
-		const ratio = typeThatChanged === 'to' ? this._rate : 1 / this._rate;
+		const otherType = baseType === 'to' ? 'from' : 'to';
+		const ratio = baseType === 'to' ? this._rate : 1 / this._rate;
 
 		this._values[otherType].quantity = ratio * quantity;
+	}
+
+	@action
+	private setRate(newRate: number): void {
+		if (this._rate === newRate) {
+			return;
+		}
+		this._rate = newRate;
+		this._values.to.quantity = this._values.from.quantity * newRate;
+	}
+
+	@action
+	private fetchRates(): void {
+		const base = this._values.from.currency.code;
+
+		// Get all currency codes except the base one
+		const codes = currenciesArr.reduce((result, code) => {
+			if (code !== base) {
+				result.push(code);
+			}
+			return result;
+		}, []);
+
+		const params: RatesParams = {
+			base,
+			symbols: codes.join(','),
+		};
+
+		axios.get(RATES_URL, { params })
+			.then(
+				(response: AxiosResponse<RatesResponse>) => {
+					const codeTo = this._values.to.currency.code;
+					const rate = get<number>(response.data?.rates, codeTo, 1);
+
+					this._rates = response.data?.rates;
+					this.setRate(rate);
+
+					return response;
+				},
+			)
+		;
 	}
 }
 

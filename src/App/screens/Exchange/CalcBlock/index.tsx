@@ -50,6 +50,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 	const input = useRef<InputControls>();
 
 	const currentQuantity = exchange.values[type].quantity;
+	const values = exchange.values;
 
 	// Trace store value changes and update the input
 	useEffect(() => {
@@ -60,18 +61,19 @@ const CalcBlock: React.FC<Props> = observer(props => {
 
 	// Setup controls object to handle input value
 	const setupInputControls = useCallback(controls => {
+
 		input.current = controls;
 	}, []);
 
 	// Dropdown onChange handler
 	const onCurrencyChange = useCallback((currency: Currency): void => {
-		// FIXME: unmock rate
-		exchange.setCurrency(currency, 1.5, type);
 
+		exchange.setCurrency(currency, type);
 	}, [type]);
 
 	// Input onChange handler
 	const onQuantityChange = useCallback(newQnt => {
+
 		if (newQnt === '') {
 			return;
 		}
@@ -82,6 +84,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 
 	// Default dropdown option
 	const defaultOption = useMemo((): DropdownOption<Currency> => {
+
 		const currency = exchange.values[type].currency;
 
 		return {
@@ -91,9 +94,11 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const isQntDisabled = values.from.currency.code === values.to.currency.code;
+
 	return (
 		<Container calcType={ type }>
-			<InputWrapper>
+			<InputWrapper isDisabled={ false }>
 				<Dropdown<Currency>
 					defaultOption={ defaultOption }
 					options={ currencyOptions }
@@ -101,12 +106,13 @@ const CalcBlock: React.FC<Props> = observer(props => {
 				/>
 			</InputWrapper>
 
-			<InputWrapper>
+			<InputWrapper isDisabled={ isQntDisabled }>
 				<Input
 					type="float2"
 					onChange={ onQuantityChange }
 					initialValue={ exchange.values[type].quantity }
 					onControlsReady={ setupInputControls }
+					isDisabled={ isQntDisabled }
 				/>
 			</InputWrapper>
 
