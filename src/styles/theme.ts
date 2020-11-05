@@ -72,9 +72,9 @@ const mainTheme: Theme = {
 	},
 
 	fontSizes: {
-		regular: '2.5vh',
-		small: '1.5vh',
-		large: '4vh',
+		regular: '2.5vmin',
+		small: '1.5vmin',
+		large: '4vmin',
 	},
 
 	zIndex: {
