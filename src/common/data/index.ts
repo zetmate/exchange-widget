@@ -21,7 +21,7 @@ const currencies: { [key in CurrencyCode]: Currency } = {
 * -30 EUR + 27.01 GBP
 * - 300 USD + 113.13 GBP
 * */
-const currenciesArr: CurrencyCode[] = ['USD', 'EUR', 'GBP'];
+const currenciesArr: CurrencyCode[] = ['GBP', 'EUR', 'USD'];
 
 const initialBalance: Balance = {
 	EUR: 1160.12,
