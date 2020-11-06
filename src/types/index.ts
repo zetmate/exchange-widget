@@ -43,6 +43,6 @@ export type ExchangeHistory = { [key in CurrencyCode]: ExchangeRecord[] };
  */
 export type RatesResponse = {
 	rates: { [key in CurrencyCode]: number };
-	base: CurrencyCode;
-	date: string;
+	base?: CurrencyCode;
+	date?: string;
 }

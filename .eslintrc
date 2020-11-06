@@ -73,6 +73,15 @@
 			"warn",
 			"as-needed"
 		],
+		"no-console": [
+			"warn",
+			{
+				"allow": [
+					"warn",
+					"error"
+				]
+			}
+		],
 		"typescript/member-delimiter-style": "error",
 
 		// Import / Export style

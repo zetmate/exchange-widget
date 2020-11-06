@@ -33,9 +33,9 @@ type SubmitProps = StyledProps & {
 	isDisabled: boolean;
 }
 
-const getSubmitCursor = (p: SubmitProps): string => {
+const getSubmitPointerEvents = (p: SubmitProps): string => {
 	if (p.isDisabled) {
-		return 'not-allowed';
+		return 'none';
 	}
 	return 'auto';
 };
@@ -48,7 +48,7 @@ const getSubmitColor = (p: SubmitProps): string => {
 };
 
 const Submit = styled.p<SubmitProps>`
-	cursor: ${ getSubmitCursor };
+	pointer-events: ${ getSubmitPointerEvents } ;
 	color: ${ getSubmitColor };
 `;
 

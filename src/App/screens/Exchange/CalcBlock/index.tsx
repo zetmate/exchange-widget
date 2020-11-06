@@ -24,6 +24,7 @@ import {
 
 type Props = {
 	type: CalcType;
+	testId: string;
 }
 
 // Parse currencies for dropdown
@@ -48,12 +49,18 @@ const currencyOptions = (
 	}
 )();
 
+/*
+ * Test constants
+ */
+const CALC_DD_TEST_TD = 'calc__dropdown';
+const CALC_INPUT_TEST_TD = 'calc__input';
+
 /**
  * Calculation block component
  */
 const CalcBlock: React.FC<Props> = observer(props => {
 
-	const { type } = props;
+	const { type, testId } = props;
 	const input = useRef<InputControls>();
 
 	const values = exchange.values;
@@ -106,6 +113,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Text with the info about balance
 	const balanceText = useMemo(() => {
 		const currencyBalance = roundTo(app.balance[currencyCode], 2);
 
@@ -114,6 +122,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		);
 	}, [currencyCode, currencySymbol]);
 
+	// Text with the current rate info
 	const rateText = useMemo(() => {
 		const { symbol: fromSymbol } = values.from.currency;
 		const { symbol: toSymbol } = values.to.currency;
@@ -127,15 +136,17 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [exchange.rate, currencyCode]);
 
+	// Flags
 	const isQntDisabled = values.from.currency.code === values.to.currency.code;
 	const isRateLoading = isNil(exchange.rate);
 
 	return (
-		<Container calcType={ type }>
+		<Container calcType={ type } data-testid={ testId }>
 			<InputWrapper
 				isDisabled={ false }
 				isLoading={ isRateLoading }
 				hasInvalidValue={ false }
+				data-testid={ CALC_DD_TEST_TD }
 			>
 				<Dropdown<Currency>
 					defaultOption={ defaultOption }
@@ -150,6 +161,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 				isDisabled={ isQntDisabled }
 				isLoading={ isRateLoading }
 				hasInvalidValue={ !exchange.canBeSubmitted }
+				data-testid={ CALC_INPUT_TEST_TD }
 			>
 				<Input
 					type="float2"
@@ -164,5 +176,10 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		</Container>
 	);
 });
+
+export {
+	CALC_DD_TEST_TD,
+	CALC_INPUT_TEST_TD,
+};
 
 export default CalcBlock;

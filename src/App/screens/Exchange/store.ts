@@ -1,11 +1,19 @@
 import { action, computed, observable } from 'mobx';
-import axios, { AxiosResponse } from 'axios';
+import realAxios, { AxiosResponse } from 'axios';
+import mockAxios from 'jest-mock-axios';
 
 import { Currency, ExchangeRecord, RatesResponse } from '../../../types';
 import { currencies, currenciesArr } from '../../../common/data';
 import { get, isNil } from '../../../helpers/utils';
 import app from '../../store';
 import { CalcType, ExchangeValues } from './types';
+
+// Mock axios for test env
+const axios: typeof realAxios = (
+	process.env.NODE_ENV === 'test'
+		? mockAxios as any
+		: realAxios
+);
 
 const RATES_URL = 'https://api.exchangeratesapi.io/latest';
 
@@ -47,11 +55,15 @@ interface IExchange {
 
 	/**
 	 * Set new quantity
+	 * @param quantity - new value
+	 * @param calcType - to or from
 	 */
 	setQuantity(quantity: number, calcType: CalcType): void;
 
 	/**
 	 * Select another currency
+	 * @param currency - new currency data
+	 * @param calcType - to or from
 	 */
 	setCurrency(currency: Currency, calcType: CalcType): void;
 
@@ -99,8 +111,9 @@ class Exchange implements IExchange {
 		// Check if there's enough money
 		const { quantity, currency: { code } } = this._values.from;
 		const isEnoughMoney = quantity <= app.balance[code];
+		const isQntValid = quantity && quantity > 0;
 
-		return areCurrenciesValid && isEnoughMoney;
+		return areCurrenciesValid && isEnoughMoney && isQntValid;
 	}
 
 	/*
