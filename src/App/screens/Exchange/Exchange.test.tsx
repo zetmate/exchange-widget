@@ -26,26 +26,104 @@ import ExchangeScreen, {
 /*
  * API mocks
  */
-const mockRates: RatesResponse['rates'] = {
+const rates: RatesResponse['rates'] = {
 	USD: 2,
 	EUR: 3,
 	GBP: 4,
 };
 const ratesResponse = {
 	status: 200,
-	data: { rates: mockRates } as RatesResponse,
+	data: { rates } as RatesResponse,
 };
 
 describe('Exchange screen', () => {
 
 	afterEach(() => {
 		cleanup();
+		mockAxios.reset();
 	});
 
 	it('Should render without errors', () => {
 
 		const { container } = renderWithDeps(<ExchangeScreen />);
 		expect(container).toBeDefined();
+	});
+
+	it('Should recalculate quantity onChange', async () => {
+
+		const { container } = renderWithDeps(<ExchangeScreen />);
+
+		// Declare constants
+		const toCurr = exchange.values.to.currency.code;
+
+		const quantityFrom = 50;
+		const expectedQuantityTo = rates[toCurr] * quantityFrom;
+
+		// Mock rates
+		mockAxios.mockResponse(ratesResponse);
+
+		// Get input fields
+		const fromBlock = await findByTestId(container, BLOCK_FROM_TEST_ID);
+		const fromInput = fromBlock.getElementsByTagName('input')[0];
+
+		const toBlock = await findByTestId(container, BLOCK_TO_TEST_ID);
+		const toInput = toBlock.getElementsByTagName('input')[0];
+
+		// Change the "from" quantity
+		fromInput.value = quantityFrom.toString();
+		Simulate.change(fromInput);
+
+		// Expect "to" quantity to change
+		await waitFor(() => {
+			expect(toInput.value).toBe(expectedQuantityTo.toString());
+		});
+
+	});
+
+	it('Should re-fetch rates when base currency is changed', async () => {
+
+		const { container } = renderWithDeps(<ExchangeScreen />);
+
+		// Mock rates
+		mockAxios.mockResponse(ratesResponse);
+
+		// Change base currency to USD
+		const fromBlock = await findByTestId(container, BLOCK_FROM_TEST_ID);
+		const dropdown = await findByTestId(fromBlock, DD_FIELD_TEST_ID);
+		Simulate.click(dropdown);
+
+		const option = await findByText(fromBlock, 'USD');
+		Simulate.click(option);
+
+		// Expect rates to be fetched for new base currency
+		await waitFor(() => {
+			const requestQueryParams = mockAxios.lastReqGet()?.config.params;
+
+			expect(requestQueryParams?.base).toBe('USD');
+		});
+
+	});
+
+	it('Should change rate when "to" currency is changed', async () => {
+
+		const { container } = renderWithDeps(<ExchangeScreen />);
+
+		// Mock rates
+		mockAxios.mockResponse(ratesResponse);
+
+		// Change"to" currency to USD
+		const block = await findByTestId(container, BLOCK_TO_TEST_ID);
+		const dropdown = await findByTestId(block, DD_FIELD_TEST_ID);
+		Simulate.click(dropdown);
+
+		const option = await findByText(block, 'USD');
+		Simulate.click(option);
+
+		// Expect USD rate to be set
+		await waitFor(() => {
+			expect(exchange.rate).toBe(rates.USD);
+		});
+
 	});
 
 	it('Should disable inputs if same currency is chosen', async () => {
@@ -147,6 +225,47 @@ describe('Exchange screen', () => {
 
 			expect(app.history[toCurr].length).toBe(expected.to);
 			expect(app.history[fromCurr].length).toBe(expected.from);
+		});
+	});
+
+	it('Should update balance on submit', async () => {
+
+		const { container } = renderWithDeps(<ExchangeScreen />);
+		const quantity = 50;
+
+		// Get initial number of records
+		const fromCurr = exchange.values.from.currency.code;
+		const toCurr = exchange.values.to.currency.code;
+
+		const initialBalance = {
+			from: app.balance[fromCurr],
+			to: app.balance[toCurr],
+		};
+
+		// Mock rates
+		mockAxios.mockResponse(ratesResponse);
+
+		// Type a quantity
+		const fromBlock = await findByTestId(container, BLOCK_FROM_TEST_ID);
+		const fromInput = fromBlock.getElementsByTagName('input')[0];
+
+		fromInput.value = quantity.toString();
+		Simulate.change(fromInput);
+
+		// Submit
+		const submit = getByTestId(container, SUBMIT_TEST_ID);
+		Simulate.click(submit);
+
+		// Check balance
+		const expectedBalance = {
+			from: initialBalance.from - quantity,
+			to: initialBalance.to + quantity * rates[toCurr],
+		};
+
+		await waitFor(() => {
+
+			expect(app.balance[fromCurr]).toBe(expectedBalance.from);
+			expect(app.balance[toCurr]).toBe(expectedBalance.to);
 		});
 	});
 });
