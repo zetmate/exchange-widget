@@ -6,6 +6,9 @@ import CalcBlock from './CalcBlock';
 import { ButtonsContainer, Container, Submit } from './Exchange.styled';
 import exchange from './store';
 
+/**
+ * Exchange screen component
+ */
 const ExchangeScreen = React.memo(() => {
 
 	const history = useHistory();
