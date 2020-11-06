@@ -83,7 +83,7 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 const OPTIONS_SPY_NAME: any = generateHash();
 
 const traceMemoryLeaks = (): void => {
-	// For tracing memory leaks
+	// Only for test env. Call a spy function if it exists
 	if (process.env.NODE_ENV === 'test') {
 		const spyFunc = window[OPTIONS_SPY_NAME] as any;
 
