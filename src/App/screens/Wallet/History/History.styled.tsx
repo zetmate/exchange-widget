@@ -19,7 +19,8 @@ const Container = styled(FlexColumn)`
 `;
 
 const Label = styled(FlexCenter)`
-	color: ${ (p: StyledProps) => p.theme.colors.midMain }
+	color: ${ (p: StyledProps) => p.theme.colors.midMain };
+	font-weight: ${ (p: StyledProps) => p.theme.fontWeights.semiBold };
 `;
 
 const List = styled.div`
@@ -30,7 +31,7 @@ const ListItem = styled(FlexRowBetween)`
 	width: 100%;
 	height: 10vh;
 	align-items: center;
-	
+
 	&:last-child {
 		margin-bottom: 1.5vh;
 	}
@@ -51,13 +52,11 @@ const Numbers = styled(FlexColumn)`
 		margin-left: auto;
 	}
 
-	> p:first-of-type {
-		font-weight: ${ (p: StyledProps) => p.theme.fontWeights.semiBold };
-	}
-
 	> p:last-of-type {
 		color: ${ (p: StyledProps) => p.theme.colors.midMain };
+
 		font-size: ${ (p: StyledProps) => p.theme.fontSizes.small };
+		font-weight: ${ (p: StyledProps) => p.theme.fontWeights.semiBold };
 	}
 `;
 
