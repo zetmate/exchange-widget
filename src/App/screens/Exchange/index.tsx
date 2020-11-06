@@ -36,8 +36,21 @@ const ExchangeScreen: React.FC = observer(() => {
 		if (!selfRef.current) {
 			return;
 		}
-		const computed = getComputedStyle(selfRef.current)?.width;
-		setWidth(computed);
+		// Define a handler
+		const resizeHandler = (): void => {
+			const computed = getComputedStyle(selfRef.current)?.width;
+			setWidth(computed);
+		};
+
+		// Calculate
+		resizeHandler();
+
+		// Manage listeners
+		window.addEventListener('resize', resizeHandler);
+
+		return () => {
+			window.removeEventListener('resize', resizeHandler);
+		};
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selfRef.current]);

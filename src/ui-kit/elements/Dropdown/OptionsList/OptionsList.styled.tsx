@@ -3,7 +3,7 @@ import { StyledProps } from '../../../../types';
 
 const Container = styled.div`
 	border: 2px solid rgba(255, 255, 255, 0.8);
-	background: ${ (p: StyledProps) => p.theme.colors.main }
+	background: ${ (p: StyledProps) => p.theme.colors.main };
 `;
 
 export {

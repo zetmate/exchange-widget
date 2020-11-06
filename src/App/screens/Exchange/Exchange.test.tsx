@@ -36,11 +36,15 @@ const ratesResponse = {
 	data: { rates } as RatesResponse,
 };
 
+// Make mockAxios available
+(window as any).mockAxios = mockAxios;
+
 describe('Exchange screen', () => {
 
 	afterEach(() => {
 		cleanup();
 		mockAxios.reset();
+		exchange.reset();
 	});
 
 	it('Should render without errors', () => {

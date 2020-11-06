@@ -1,19 +1,11 @@
 import { action, computed, observable } from 'mobx';
 import realAxios, { AxiosResponse } from 'axios';
-import mockAxios from 'jest-mock-axios';
 
 import { Currency, ExchangeRecord, RatesResponse } from '../../../types';
 import { currencies, currenciesArr } from '../../../common/data';
 import { get, isNil } from '../../../helpers/utils';
 import app from '../../store';
 import { CalcType, ExchangeValues } from './types';
-
-// Mock axios for test env
-const axios: typeof realAxios = (
-	process.env.NODE_ENV === 'test'
-		? mockAxios as any
-		: realAxios
-);
 
 const RATES_URL = 'https://api.exchangeratesapi.io/latest';
 
@@ -52,6 +44,11 @@ interface IExchange {
 	 * Send changes to the server
 	 */
 	submit(): void;
+
+	/**
+	 * Resets the store
+	 */
+	reset(): void;
 
 	/**
 	 * Set new quantity
@@ -147,6 +144,14 @@ class Exchange implements IExchange {
 		app.balance[to.currency.code] += to.quantity;
 
 		// Set initial values
+		this._values = initialValues;
+	}
+
+	@action reset(): ReturnType<IExchange['reset']> {
+		this.stopUpdatingRates();
+
+		this._rate = null;
+		this._rates = null;
 		this._values = initialValues;
 	}
 
@@ -258,6 +263,12 @@ class Exchange implements IExchange {
 			base,
 			symbols: codes.join(','),
 		};
+
+		const axios: typeof realAxios = (
+			process.env.NODE_ENV === 'test'
+				? (window as any).mockAxios
+				: realAxios
+		);
 
 		axios.get(RATES_URL, { params })
 			.then(
