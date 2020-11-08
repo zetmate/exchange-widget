@@ -1,7 +1,6 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-// TODO: add source map
 module.exports = merge(common, {
 	mode: 'development',
 

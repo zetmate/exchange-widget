@@ -204,8 +204,7 @@ class Exchange implements IExchange {
 
 	@action startUpdatingRates(): void {
 		void this.fetchRates();
-		// FIXME: change to 10 seconds
-		this.timerId = setInterval(this.fetchRates.bind(this), 36000000);
+		this.timerId = setInterval(this.fetchRates.bind(this), 10 ** 4);
 	}
 
 	stopUpdatingRates(): void {
