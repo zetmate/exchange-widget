@@ -68,8 +68,12 @@ const InputWrapper = styled(FlexColumn)<InputWrapperProps>`
 		cursor: ${ getInputWrapperCursor };
 	}
 	
-	input {
+	* {
 		color: ${ getInputColor }
+	}
+
+	input {
+		padding-left: 0.15em;
 	}
 `;
 

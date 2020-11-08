@@ -136,6 +136,9 @@ const CalcBlock: React.FC<Props> = observer(props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [exchange.rate, currencyCode]);
 
+	// Input value prefix
+	const inputPrefix = type === 'to' ? '+' : '-';
+
 	// Flags
 	const isQntDisabled = values.from.currency.code === values.to.currency.code;
 	const isRateLoading = isNil(exchange.rate);
@@ -165,6 +168,7 @@ const CalcBlock: React.FC<Props> = observer(props => {
 			>
 				<Input
 					type="float2"
+					prefix={ currentQuantity ? inputPrefix : '' }
 					onChange={ onQuantityChange }
 					initialValue={ exchange.values[type].quantity }
 					onControlsReady={ setupInputControls }
