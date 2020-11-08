@@ -11,7 +11,7 @@ import { Simulate } from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 
 import { noop, renderWithDeps } from '../../../helpers';
-import { OPTIONS_SPY_NAME } from './OptionsList';
+import { optionsTest } from './OptionsList';
 import Dropdown, { DD_FIELD_TEST_ID } from './index';
 
 describe('Dropdown component', () => {
@@ -135,7 +135,8 @@ describe('Dropdown component', () => {
 
 	it('Should remove resize event listener after unmount', async () => {
 
-		window[OPTIONS_SPY_NAME] = jest.fn() as any;
+		const spy = jest.fn();
+		optionsTest.spy = spy;
 
 		const { unmount } = renderWithDeps(
 			<Dropdown
@@ -149,6 +150,6 @@ describe('Dropdown component', () => {
 		unmount();
 		window.dispatchEvent(event);
 
-		await waitFor(() => expect(window[OPTIONS_SPY_NAME]).not.toBeCalled());
+		await waitFor(() => expect(spy).not.toBeCalled());
 	});
 });

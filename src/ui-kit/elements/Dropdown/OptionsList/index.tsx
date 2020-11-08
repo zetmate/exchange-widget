@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Theme, useTheme } from '../../../../styles/theme';
 import { Option, DropdownStore, OnChange } from '../types';
 import DropdownOption from '../Option';
-import { generateHash, isFunction, isNil } from '../../../../helpers/utils';
+import { isFunction, isNil, noop } from '../../../../helpers/utils';
 import { Container } from './OptionsList.styled';
 
 type Props<T> = React.PropsWithChildren<{
@@ -68,9 +68,9 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 	return {
 		...position,
 		width,
-		position: 'absolute' as const,
+		position: 'absolute',
 		zIndex: theme.zIndex.modal,
-		overflow: 'hidden' as const,
+		overflow: 'hidden',
 
 		// Remove overlapping border
 		...(isAbove ? { borderBottom: 'none' } : { borderTop: 'none' }),
@@ -78,16 +78,19 @@ const getWrapperStyle = (field: HTMLElement, theme: Theme): unknown => {
 };
 
 /*
- *  Constants for tests
+ *  Utils for tests
  */
-const OPTIONS_SPY_NAME: any = generateHash();
+const optionsTest = {
+	// Will be reassigned in test
+	spy: noop,
+};
 
+// Only for test env. Call a spy function if it exists
 const traceMemoryLeaks = (): void => {
-	// Only for test env. Call a spy function if it exists
-	if (process.env.NODE_ENV === 'test') {
-		const spyFunc = window[OPTIONS_SPY_NAME] as any;
+	const { spy } = optionsTest;
 
-		isFunction(spyFunc) && spyFunc();
+	if (process.env.NODE_ENV === 'test') {
+		isFunction(spy) && spy();
 	}
 };
 
@@ -161,7 +164,7 @@ function OptionsList<T>(props: Props<T>): React.ReactElement {
 OptionsList.displayName = 'OptionsList';
 
 export {
-	OPTIONS_SPY_NAME,
+	optionsTest,
 };
 
 export default observer(OptionsList);

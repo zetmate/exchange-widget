@@ -13,7 +13,7 @@ import { Simulate } from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 
 import { DD_FIELD_TEST_ID } from '../../../ui-kit/elements';
-import { renderWithDeps } from '../../../helpers';
+import { renderWithDeps, testUtils } from '../../../helpers';
 import { RatesResponse } from '../../../types';
 import app from '../../store';
 import exchange from './store';
@@ -37,7 +37,11 @@ const ratesResponse = {
 };
 
 // Make mockAxios available
-(window as any).mockAxios = mockAxios;
+// Don't know how to do it without casting to any,
+// some of the return types are not fully compatible
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+testUtils.mockAxios = mockAxios as any;
 
 describe('Exchange screen', () => {
 

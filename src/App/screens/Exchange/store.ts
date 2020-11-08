@@ -1,9 +1,10 @@
 import { action, computed, observable } from 'mobx';
-import realAxios, { AxiosResponse } from 'axios';
+import realAxios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { Currency, ExchangeRecord, RatesResponse } from '../../../types';
 import { currencies, currenciesArr } from '../../../common/data';
-import { get, isNil } from '../../../helpers/utils';
+import { isNil } from '../../../helpers/utils';
+import { testUtils } from '../../../helpers/tests';
 import app from '../../store';
 import { CalcType, ExchangeValues } from './types';
 
@@ -163,7 +164,7 @@ class Exchange implements IExchange {
 		}
 
 		// Get quantity
-		const quantity = get(this._values, `${ calcType }.quantity`);
+		const quantity = this._values[calcType].quantity;
 
 		// Update values
 		this._values[calcType] = { quantity, currency };
@@ -194,7 +195,7 @@ class Exchange implements IExchange {
 
 	@action setQuantity(quantity: number, calcType: CalcType): void {
 		// Get currency
-		const currency = get(this._values, `${ calcType }.currency`);
+		const currency = this._values[calcType].currency;
 
 		// Update values
 		this._values[calcType] = { quantity, currency };
@@ -223,7 +224,7 @@ class Exchange implements IExchange {
 
 	@observable private _values: IExchange['values'] = initialValues;
 
-	private timerId: any = null;
+	private timerId: number = null;
 
 	/*
 	 * Private methods
@@ -264,9 +265,9 @@ class Exchange implements IExchange {
 			symbols: codes.join(','),
 		};
 
-		const axios: typeof realAxios = (
+		const axios: AxiosInstance = (
 			process.env.NODE_ENV === 'test'
-				? (window as any).mockAxios
+				? testUtils.mockAxios
 				: realAxios
 		);
 
