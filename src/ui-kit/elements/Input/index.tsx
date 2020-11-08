@@ -9,6 +9,8 @@ import React, {
 import { getFloatRegex, intRegex, noop } from '../../../helpers';
 import { EventInput } from '../../../types';
 import { Field, StyledInput } from './Input.styled';
+import webpack from 'webpack';
+import prefix = webpack.Template.prefix;
 
 /**
  * This interface allows to control component from the outside
@@ -48,6 +50,11 @@ type Props = {
 	isDisabled?: boolean;
 
 	/**
+	 * A string to show before input value
+	 */
+	prefix?: string;
+
+	/**
 	 * Handle onChange event
 	 * @param value - current
 	 */
@@ -63,6 +70,7 @@ const defaultProps: Partial<Props> = {
 	type: 'string',
 	initialValue: '',
 	isDisabled: false,
+	prefix: '',
 	onChange: noop,
 	onControlsReady: noop,
 };
@@ -87,7 +95,7 @@ const Input: React.FC<Props> = React.memo(props => {
 
 	const {
 		type, initialValue, onControlsReady, id, isDisabled, placeholder,
-		onChange,
+		onChange, prefix,
 	} = props;
 
 	const [inputValue, setValue] = useState<string | number>(initialValue);
@@ -145,6 +153,7 @@ const Input: React.FC<Props> = React.memo(props => {
 
 	return (
 		<Field isFocused={ isFocused }>
+			{ prefix }
 			<StyledInput
 				id={ id }
 				value={ inputValue }
