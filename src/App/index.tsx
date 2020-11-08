@@ -1,13 +1,15 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import routes from './screens/routes';
+import { ExchangeScreen, WalletScreen } from './screens';
+import { AppContainer } from './App.styled';
 
 /**
  * Redirect to default route
  */
-const IndexRedirect = () => (
+const IndexRedirect = (): React.ReactElement => (
 	<Redirect to={ routes.wallet } />
 );
 
@@ -17,7 +19,7 @@ const IndexRedirect = () => (
 const App: React.FC = React.memo(() => {
 
 	return (
-		<Router basename={ routes.index }>
+		<AppContainer>
 			<Switch>
 				<Route
 					exact
@@ -27,17 +29,19 @@ const App: React.FC = React.memo(() => {
 				<Route
 					exact
 					path={ routes.wallet }
-					component={ () => <div>Wallet</div> }
+					component={ WalletScreen }
 				/>
 				<Route
 					exact
 					path={ routes.exchange }
-					component={ () => <div>Exchange</div> }
+					component={ ExchangeScreen }
 				/>
 			</Switch>
-		</Router>
+		</AppContainer>
 	);
 });
 
 App.displayName = 'App';
+
+export { default as routes } from './screens/routes';
 export default App;

@@ -8,7 +8,11 @@
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript",
+		"plugin:jest/recommended"
 	],
 	"globals": {
 		"Atomics": "readonly",
@@ -25,7 +29,9 @@
 	"plugins": [
 		"react",
 		"react-hooks",
-		"@typescript-eslint"
+		"@typescript-eslint",
+		"typescript",
+		"jest"
 	],
 	"rules": {
 		// Code Style
@@ -63,6 +69,28 @@
 			"error",
 			"always"
 		],
+		"arrow-parens": [
+			"warn",
+			"as-needed"
+		],
+		"no-console": [
+			"warn",
+			{
+				"allow": [
+					"warn",
+					"error"
+				]
+			}
+		],
+		"typescript/member-delimiter-style": "error",
+
+		// Import / Export style
+		"import/first": "error",
+		"import/exports-last": "error",
+		"import/no-duplicates": "error",
+		"import/no-cycle": "error",
+		"import/order": "warn",
+		"import/newline-after-import": "warn",
 
 		// Code Quality
 		"no-fallthrough": [
@@ -71,8 +99,10 @@
 				"commentPattern": "break[\\s\\w]*omitted"
 			}
 		],
-		"no-unused-vars": "off",
 		// NB: need to turn it off to enable TS rule
+		"no-unused-vars": 0,
+		// Turn off, otherwise it's false positive for regexp
+		"no-useless-escape": 0,
 
 		// React
 		"react/prop-types": 0,
@@ -81,10 +111,14 @@
 
 		// Typescript
 		"@typescript-eslint/no-var-requires": 0,
-		"@typescript-eslint/no-unused-vars": [
-			"error"
-		],
-		"@typescript-eslint/no-explicit-any": 0,
-		"@typescript-eslint/explicit-module-boundary-types": 0
+		"@typescript-eslint/no-unused-vars": "error",
+		"@typescript-eslint/no-explicit-any": "error",
+		"@typescript-eslint/explicit-module-boundary-types": 0,
+		"@typescript-eslint/explicit-function-return-type": [
+			"warn",
+			{
+				"allowExpressions": true
+			}
+		]
 	}
 }

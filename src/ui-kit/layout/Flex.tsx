@@ -21,9 +21,9 @@ import {
 type FlexProps = SpaceProps & LayoutProps & ColorProps & FlexboxProps
 	& TypographyProps
 	& {
-	onClick?: MouseEventHandler,
-	onMouseOver?: MouseEventHandler,
-	onMouseOut?: MouseEventHandler
+	onClick?: MouseEventHandler;
+	onMouseOver?: MouseEventHandler;
+	onMouseOut?: MouseEventHandler;
 };
 type FlexFC = React.FC<FlexProps>;
 
@@ -44,7 +44,7 @@ Flex.displayName = 'Flex';
 /*
 * Flex center center
 *  */
-const FlexCenter: FlexFC = React.memo((props) => (
+const FlexCenter: FlexFC = React.memo(props => (
 	<Flex justifyContent="center" alignItems="center" { ...props } />
 ));
 FlexCenter.displayName = 'FlexCenter';
@@ -52,7 +52,7 @@ FlexCenter.displayName = 'FlexCenter';
 /*
 * Flex row center
 *  */
-const FlexRowCenter: FlexFC = React.memo((props) => (
+const FlexRowCenter: FlexFC = React.memo(props => (
 	<Flex justifyContent="center" { ...props } />
 ));
 FlexRowCenter.displayName = 'FlexRowCenter';
@@ -60,7 +60,7 @@ FlexRowCenter.displayName = 'FlexRowCenter';
 /*
 * Flex row space between
 *  */
-const FlexRowBetween: FlexFC = React.memo((props) => (
+const FlexRowBetween: FlexFC = React.memo(props => (
 	<Flex justifyContent="space-between" { ...props } />
 ));
 FlexRowBetween.displayName = 'FlexRowBetween';
@@ -68,7 +68,7 @@ FlexRowBetween.displayName = 'FlexRowBetween';
 /*
 * Flex column
 *  */
-const FlexColumn: FlexFC = React.memo((props) => (
+const FlexColumn: FlexFC = React.memo(props => (
 	<Flex flexDirection="column" { ...props } />
 ));
 FlexColumn.displayName = 'FlexColumn';
@@ -76,7 +76,7 @@ FlexColumn.displayName = 'FlexColumn';
 /*
 * Flex column center
 *  */
-const FlexColumnCenter: FlexFC = React.memo((props) => (
+const FlexColumnCenter: FlexFC = React.memo(props => (
 	<Flex flexDirection="column" justifyContent="center" { ...props } />
 ));
 FlexColumnCenter.displayName = 'FlexColumnCenter';
@@ -84,7 +84,7 @@ FlexColumnCenter.displayName = 'FlexColumnCenter';
 /*
 * Flex column between
 *  */
-const FlexColumnBetween: FlexFC = React.memo((props) => (
+const FlexColumnBetween: FlexFC = React.memo(props => (
 	<Flex flexDirection="column" justifyContent="space-between" { ...props } />
 ));
 FlexColumnBetween.displayName = 'FlexColumnBetween';
