@@ -62,7 +62,7 @@ function Dropdown<T>(props: Props<T>): React.ReactElement {
 	const caret = useMemo(() => (
 		<CaretIcon
 			direction="down"
-			size="100%"
+			size="3.2vh"
 			color={ theme.colors.transparentWhite }
 		/>
 	), [theme]);
