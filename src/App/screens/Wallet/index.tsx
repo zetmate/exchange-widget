@@ -47,7 +47,7 @@ const WalletScreen: React.FC = observer(() => {
 	return (
 		<Container>
 			<ExchangeBtn onClick={ navigateToExchange }>
-				<ExchangeIcon size="100%" />
+				<ExchangeIcon size="6vmin" />
 				Exchange
 			</ExchangeBtn>
 
