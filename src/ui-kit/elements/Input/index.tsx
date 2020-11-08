@@ -9,8 +9,6 @@ import React, {
 import { getFloatRegex, intRegex, noop } from '../../../helpers';
 import { EventInput } from '../../../types';
 import { Field, StyledInput } from './Input.styled';
-import webpack from 'webpack';
-import prefix = webpack.Template.prefix;
 
 /**
  * This interface allows to control component from the outside
